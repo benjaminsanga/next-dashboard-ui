@@ -53,7 +53,7 @@ export default function Home() {
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center">
-              <div className="w-2/4 text-white px-4">
+              <div className="lg:w-2/4 w-[80%] text-white px-4">
                 <h1 className="text-4xl font-bold mb-2">{slides[currentSlide].title}</h1>
                 <p className="text-lg">{slides[currentSlide].description}</p>
                 <button
@@ -84,7 +84,7 @@ export default function Home() {
         <section className="py-16 bg-gray-100">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-8">About Us</h2>
-            <p className="w-3/5 text-lg text-gray-700 leading-relaxed text-center mx-auto">
+            <p className="lg:w-3/5 w-[80%] text-lg text-gray-700 leading-relaxed text-center mx-auto">
               Our system is designed to replace outdated record-keeping methods such as Excel and MS Access. 
               By leveraging cutting-edge technology, we streamline the management of registration documents, scores, 
               and course-related records for military officers and soldiers.
@@ -104,7 +104,7 @@ export default function Home() {
                 className="rounded-lg shadow-md w-full"
               />
             </div>
-            <div className="md:w-2/3 md:pl-8">
+            <div className="md:w-2/3 lg:text-left text-center md:pl-8">
               <h2 className="text-3xl font-bold mb-4">Meet the Commandant</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 The Commandant is a visionary leader dedicated to improving military education systems. 

@@ -6,7 +6,7 @@ export default function UserNavbar() {
   // const user = useAuth();
 
   return (
-    <nav className="bg-gray-100 border-b shadow-md text-gray-600 py-4">
+    <nav className="bg-gray-100 border-b shadow-md text-gray-600 py-4 lg:px-0 px-5">
       <div className="container mx-auto flex justify-between">
         <Link href="/" className="text-xl font-medium">
           NASFA DBMS
