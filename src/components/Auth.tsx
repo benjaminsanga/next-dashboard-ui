@@ -22,7 +22,7 @@ export default function Auth() {
     if (error) toast.error(error?.message);
     else {
       toast.success("Login successful!");
-      location.href = "/dashboard/student"
+      location.href = "/student"
     }
   };
 
@@ -63,13 +63,14 @@ export default function Auth() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
+        <select
           className="w-full mb-2 p-2 border rounded text-sm"
-          type="text"
-          placeholder="Role"
-          value={role}
           onChange={(e) => setRole(e.target.value)}
-        />
+        >
+          <option>Select Role</option>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
           type="password"

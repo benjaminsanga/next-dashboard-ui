@@ -12,17 +12,17 @@ export default function Home() {
     {
       title: 'Welcome to the NASFA Database Management System',
       description: 'Streamlining course management for officers and soldiers.',
-      image: '/images/NASFA1.jpg',
+      image: '/images/slider-1.jpg',
     },
     {
-      title: 'Efficient, Secure, and Scalable',
-      description: 'Replacing Excel and MS Access with a centralized solution.',
-      image: '/images/NASFA2.jpg',
+      title: 'Efficient, Secure, and Scalable System',
+      description: 'Replacing manual processes with a centralized solution.',
+      image: '/images/slider-2.jpg',
     },
     {
       title: 'Built for the Future',
       description: 'Automating tasks and providing secure access to records.',
-      image: '/images/NASFA2.jpg',
+      image: '/images/slider-3.jpg',
     },
   ];
 
@@ -52,16 +52,10 @@ export default function Home() {
               height={100}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-center">
+            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center text-center">
               <div className="lg:w-2/4 w-[80%] text-white px-4">
-                <h1 className="text-4xl font-bold mb-2">{slides[currentSlide].title}</h1>
+                <h1 className="text-4xl font-bold mb-5">{slides[currentSlide].title}</h1>
                 <p className="text-lg">{slides[currentSlide].description}</p>
-                <button
-                  onClick={handleNextSlide}
-                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-                >
-                  Learn More
-                </button>
               </div>
             </div>
           </div>
@@ -95,7 +89,7 @@ export default function Home() {
         {/* About the Commandant */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-            <div className="md:w-1/3 mb-8 md:mb-0">
+            <div className="md:w-1/5 w-1/3 mb-8 md:mb-0">
               <Image
                 src="/images/osi.jpg"
                 alt="Commandant"
@@ -104,7 +98,7 @@ export default function Home() {
                 className="rounded-lg shadow-md w-full"
               />
             </div>
-            <div className="md:w-2/3 lg:text-left text-center md:pl-8">
+            <div className="md:w-4/5 w-2/3 lg:text-left text-center md:pl-8">
               <h2 className="text-3xl font-bold mb-4">Meet the Commandant</h2>
               <p className="text-lg text-gray-700 leading-relaxed">
                 The Commandant is a visionary leader dedicated to improving military education systems. 
