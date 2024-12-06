@@ -5,22 +5,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import InputField from "../InputField";
 import Image from "next/image";
+import { supabase } from "@/lib/supabase";
 
 const schema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(20, { message: "Username must be at most 20 characters long!" }),
   email: z.string().email({ message: "Invalid email address!" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long!" }),
-  firstName: z.string().min(1, { message: "First name is required!" }),
-  lastName: z.string().min(1, { message: "Last name is required!" }),
+  first_name: z.string().min(1, { message: "First name is required!" }),
+  last_name: z.string().min(1, { message: "Last name is required!" }),
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
-  bloodType: z.string().min(1, { message: "Blood Type is required!" }),
-  birthday: z.date({ message: "Birthday is required!" }),
+  blood_type: z.string().min(1, { message: "Blood Type is required!" }),
+  birthday: z.date({ message: "Date of Birth is required!" }),
   sex: z.enum(["male", "female"], { message: "Sex is required!" }),
   img: z.instanceof(File, { message: "Image is required" }),
 });
@@ -42,8 +39,22 @@ const StudentForm = ({
     resolver: zodResolver(schema),
   });
 
+  const insertStudent = async (student: Inputs): Promise<Inputs | null> => {
+    const { data, error } = await supabase
+      .from('students')
+      .insert([student])
+      .single();
+  
+    if (error) {
+      console.error("Error inserting student:", error.message);
+      return null;
+    }
+    return data as Inputs;
+  };  
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    const result = insertStudent(data);
+    console.log("result", result)
   });
 
   return (
@@ -52,14 +63,7 @@ const StudentForm = ({
       <span className="text-xs text-gray-400 font-medium">
         Authentication Information
       </span>
-      <div className="flex justify-between flex-wrap gap-4">
-        <InputField
-          label="Username"
-          name="username"
-          defaultValue={data?.username}
-          register={register}
-          error={errors?.username}
-        />
+      <div className="flex justify-start flex-wrap gap-4">
         <InputField
           label="Email"
           name="email"
@@ -82,17 +86,17 @@ const StudentForm = ({
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="First Name"
-          name="firstName"
-          defaultValue={data?.firstName}
+          name="first_name"
+          defaultValue={data?.first_name}
           register={register}
-          error={errors.firstName}
+          error={errors.first_name}
         />
         <InputField
           label="Last Name"
-          name="lastName"
-          defaultValue={data?.lastName}
+          name="last_name"
+          defaultValue={data?.last_name}
           register={register}
-          error={errors.lastName}
+          error={errors.last_name}
         />
         <InputField
           label="Phone"
@@ -110,13 +114,13 @@ const StudentForm = ({
         />
         <InputField
           label="Blood Type"
-          name="bloodType"
-          defaultValue={data?.bloodType}
+          name="blood_type"
+          defaultValue={data?.blood_type}
           register={register}
-          error={errors.bloodType}
+          error={errors.blood_type}
         />
         <InputField
-          label="Birthday"
+          label="Date of Birth"
           name="birthday"
           defaultValue={data?.birthday}
           register={register}

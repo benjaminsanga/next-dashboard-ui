@@ -98,11 +98,11 @@ export default function Home() {
             <div className="md:w-4/5 w-2/3 lg:text-left text-center md:pl-8">
               <h2 className="text-3xl font-bold mb-3">Meet the Commandant</h2>
               <p className='text-lg font-medium mb-5'>Maj Gen JE OSIFO</p>
-              <p className="text-lg text-gray-700 leading-relaxed">
+              {/* <p className="text-lg text-gray-700 leading-relaxed">
                 The Commandant is a visionary leader dedicated to improving military education systems. 
                 Under their guidance, this project ensures scalability, security, and efficiency in managing 
                 military student records for future growth.
-              </p>
+              </p> */}
             </div>
           </div>
         </section>

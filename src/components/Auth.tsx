@@ -22,7 +22,7 @@ export default function Auth() {
     if (error) toast.error(error?.message);
     else {
       toast.success("Login successful!");
-      location.href = "/student"
+      location.href = "/admin"
     }
   };
 

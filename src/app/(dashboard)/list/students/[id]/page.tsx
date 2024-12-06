@@ -1,10 +1,43 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalender";
 import Performance from "@/components/Performance";
+import { supabase } from "@/lib/supabase";
+import { StudentArgs } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const SingleStudentPage = () => {
+  const {id} = useParams()
+
+  const [student, setStudent] = useState<StudentArgs>()
+
+  useEffect(() => {
+    const fetchStudentById = async (id: string): Promise<StudentArgs | null> => {
+      const { data, error } = await supabase
+        .from('students')
+        .select('*')
+        .eq('id', id)
+        .single();
+    
+      if (error) {
+        console.error("Error fetching student:", error.message);
+        return null;
+      }
+      return data as StudentArgs;
+    };
+
+    const loadStudents = async () => {
+        const result = await fetchStudentById(id as string);
+        setStudent(result as StudentArgs);
+    };
+
+    loadStudents();
+  }, [id]);
+  
+  console.log("student:", student)
+  
   return (
     <div className="flex-1 p-4 flex flex-col gap-4 xl:flex-row">
       {/* LEFT */}
@@ -122,7 +155,7 @@ const SingleStudentPage = () => {
               Student&apos;s Lessons
             </Link>
             <Link className="p-3 rounded-md bg-lamaPurpleLight" href="/">
-              Student&apos;s Teachers
+              Student&apos;s Instructors
             </Link>
             <Link className="p-3 rounded-md bg-pink-50" href="/">
               Student&apos;s Exams

@@ -1,10 +1,14 @@
+"use client"
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
+import { StudentArgs } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 type Student = {
   id: number;
@@ -50,6 +54,31 @@ const columns = [
 ];
 
 const StudentListPage = () => {
+  const [students, setStudents] = useState<StudentArgs[]>([])
+
+  useEffect(() => {
+    const fetchAllStudents = async (): Promise<StudentArgs[]> => {
+        const { data, error } = await supabase
+            .from('students')
+            .select('*');
+        
+        if (error) {
+            console.error("Error fetching students:", error.message);
+            return [];
+        }
+        return data as StudentArgs[];
+    };
+
+    const loadStudents = async () => {
+        const students = await fetchAllStudents();
+        setStudents(students);
+    };
+
+    loadStudents();
+  }, []);
+
+  console.log("students:", students)
+  
   const renderRow = (item: Student) => (
     <tr
       key={item.id}

@@ -18,7 +18,7 @@ type Assignment = {
 
 const columns = [
   {
-    header: "Subject Name",
+    header: "Course Name",
     accessor: "name",
   },
   {
