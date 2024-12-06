@@ -12,17 +12,12 @@ export default function Home() {
     {
       title: 'Welcome to the NASFA Database Management System',
       description: 'Streamlining course management for officers and soldiers.',
-      image: '/images/slider-1.jpg',
+      image: '/images/image-1.jpg',
     },
     {
       title: 'Efficient, Secure, and Scalable System',
       description: 'Replacing manual processes with a centralized solution.',
-      image: '/images/slider-2.jpg',
-    },
-    {
-      title: 'Built for the Future',
-      description: 'Automating tasks and providing secure access to records.',
-      image: '/images/slider-3.jpg',
+      image: '/images/image-2.jpg',
     },
   ];
 
@@ -51,6 +46,7 @@ export default function Home() {
               width={100}
               height={100}
               className="w-full h-full object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center text-center">
               <div className="lg:w-2/4 w-[80%] text-white px-4">
@@ -96,10 +92,12 @@ export default function Home() {
                 width={100}
                 height={100}
                 className="rounded-lg shadow-md w-full"
+                unoptimized
               />
             </div>
             <div className="md:w-4/5 w-2/3 lg:text-left text-center md:pl-8">
-              <h2 className="text-3xl font-bold mb-4">Meet the Commandant</h2>
+              <h2 className="text-3xl font-bold mb-3">Meet the Commandant</h2>
+              <p className='text-lg font-medium mb-5'>Maj Gen JE OSIFO</p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 The Commandant is a visionary leader dedicated to improving military education systems. 
                 Under their guidance, this project ensures scalability, security, and efficiency in managing 
@@ -129,7 +127,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-semibold">Who can use this system?</h3>
                 <p className="text-gray-700">
-                  It is designed for military personnel, including officers, soldiers, and administrative staff.
+                  It is designed for students, including officers, soldiers, and administrative staff.
                 </p>
               </div>
             </div>

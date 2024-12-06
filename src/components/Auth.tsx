@@ -68,8 +68,9 @@ export default function Auth() {
           onChange={(e) => setRole(e.target.value)}
         >
           <option>Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="instructor">Instructor/Staff</option>
           <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
         </select>
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
