@@ -2,6 +2,32 @@
 
 export let role = "admin";
 
+export const departmentOptions = [
+  "Department of Accountancy",
+  "Department of Office Technology Management",
+  "Records and Clerk General Duties",
+  "Military and Service Account Department",
+];
+
+export const courseOptions = [
+  "ND1",
+  "ND2",
+  "HND1",
+  "HND2",
+  "X1",
+  "X2",
+  "X3",
+  "CDFA Course",
+  "Account Inspectorate Course",
+  "ICT Management Course",
+  "Cashier Course",
+  "Computer Appreciation Course",
+  "Young Officers Course Finance",
+  "Finance A1",
+  "Finance A2",
+  "Finance A3",
+];
+
 export const teachersData = [
   {
     id: 1,
