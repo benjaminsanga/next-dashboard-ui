@@ -46,6 +46,22 @@ export interface Instructor {
   created_at:    Date;
 }
 
+export interface Result {
+  id:           string;
+  course:       string;
+  grade:        string;
+  score:        number;
+  remarks:      null;
+  date_of_exam: null;
+  created_at:   Date;
+  student__id:  string;
+  department:   string;
+  photo_url:    string;
+  first_name:   string;
+  last_name:    string;
+}
+
+
 
 export type UploadResult = {
   path: string;

@@ -30,12 +30,12 @@ const menuItems = [
       //   href: "/list/parents",
       //   visible: ["admin", "teacher"],
       // },
-      {
-        icon: "/subject.png",
-        label: "Courses",
-        href: "/list/subjects",
-        visible: ["admin"],
-      },
+      // {
+      //   icon: "/subject.png",
+      //   label: "Courses",
+      //   href: "/list/subjects",
+      //   visible: ["admin"],
+      // },
       // {
       //   icon: "/class.png",
       //   label: "Classes",
@@ -48,12 +48,12 @@ const menuItems = [
       //   href: "/list/lessons",
       //   visible: ["admin", "teacher"],
       // },
-      {
-        icon: "/exam.png",
-        label: "Exams",
-        href: "/list/exams",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
+      // {
+      //   icon: "/exam.png",
+      //   label: "Exams",
+      //   href: "/list/exams",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
       // {
       //   icon: "/assignment.png",
       //   label: "Assignments",
@@ -62,7 +62,7 @@ const menuItems = [
       // },
       {
         icon: "/result.png",
-        label: "Results",
+        label: "Exams/Results",
         href: "/list/results",
         visible: ["admin", "teacher", "student", "parent"],
       },
@@ -95,18 +95,18 @@ const menuItems = [
   {
     title: "OTHER",
     items: [
-      {
-        icon: "/profile.png",
-        label: "Profile",
-        href: "/profile",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
-      {
-        icon: "/setting.png",
-        label: "Settings",
-        href: "/settings",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
+      // {
+      //   icon: "/profile.png",
+      //   label: "Profile",
+      //   href: "/profile",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
+      // {
+      //   icon: "/setting.png",
+      //   label: "Settings",
+      //   href: "/settings",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
       {
         icon: "/logout.png",
         label: "Logout",

@@ -63,7 +63,7 @@ export default function Auth() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <select
+        {/* <select
           className="w-full mb-2 p-2 border rounded text-sm"
           onChange={(e) => setRole(e.target.value)}
         >
@@ -71,7 +71,7 @@ export default function Auth() {
           <option value="admin">Admin</option>
           <option value="instructor">Instructor/Staff</option>
           <option value="student">Student</option>
-        </select>
+        </select> */}
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
           type="password"

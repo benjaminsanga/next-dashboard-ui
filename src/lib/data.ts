@@ -26,6 +26,10 @@ export const courseOptions = [
   "Finance A1",
   "Finance A2",
   "Finance A3",
+  "Record Clerk B1 Course",
+  "Record Clerk B2 Course",
+  "Record Clerk B3 Course",
+  "NA Chief Clerk Course",
 ];
 
 export const teachersData = [

@@ -64,8 +64,6 @@ const StudentListPage = () => {
 
     loadStudents();
   }, []);
-
-  console.log("students:", students)
   
   const renderRow = (item: Student) => (
     <tr

@@ -12,6 +12,7 @@
     "@cloudinary/react": "^1.13.1",
     "@cloudinary/url-gen": "^1.21.0",
     "@hookform/resolvers": "^3.9.0",
+    "@react-pdf/renderer": "^4.1.5",
     "@supabase/supabase-js": "^2.47.0",
     "@types/react-big-calendar": "^1.8.9",
     "moment": "^2.30.1",
