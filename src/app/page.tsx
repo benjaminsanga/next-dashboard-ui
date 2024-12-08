@@ -12,7 +12,7 @@ export default function Home() {
     {
       title: 'Welcome to the NASFA Database Management System',
       description: 'Streamlining course management for officers and soldiers.',
-      image: '/images/image-1.jpg',
+      image: '/images/nasfanight.jpg',
     },
     {
       title: 'Efficient, Secure, and Scalable System',
@@ -70,21 +70,9 @@ export default function Home() {
           </button>
         </section>
 
-        {/* About Us Section */}
-        <section className="py-16 bg-gray-100">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">About Us</h2>
-            <p className="lg:w-3/5 w-[80%] text-lg text-gray-700 leading-relaxed text-center mx-auto">
-              Our system is designed to replace outdated record-keeping methods such as Excel and MS Access. 
-              By leveraging cutting-edge technology, we streamline the management of registration documents, scores, 
-              and course-related records for military officers and soldiers.
-            </p>
-          </div>
-        </section>
-
         {/* About the Commandant */}
         <section className="py-16 bg-white">
-          <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
+          <div className="container mx-auto px-4 flex flex-col md:flex-row items-start">
             <div className="md:w-1/5 w-1/3 mb-8 md:mb-0">
               <Image
                 src="/images/osi.jpg"
@@ -96,13 +84,33 @@ export default function Home() {
               />
             </div>
             <div className="md:w-4/5 w-2/3 lg:text-left text-center md:pl-8">
-              <h2 className="text-3xl font-bold mb-3">Meet the Commandant</h2>
-              <p className='text-lg font-medium mb-5'>Maj Gen JE OSIFO</p>
-              {/* <p className="text-lg text-gray-700 leading-relaxed">
-                The Commandant is a visionary leader dedicated to improving military education systems. 
-                Under their guidance, this project ensures scalability, security, and efficiency in managing 
-                military student records for future growth.
-              </p> */}
+              <p className='text-2xl font-bold mb-3'>Maj. Gen. JE OSIFO</p>
+              <h2 className="text-lg font-bold mb-5">Commandant</h2>
+              <p>
+                Major General Julius Ehioze Osifo, a distinguished and decorated veteran, assumed the role of the 51st Commandant of the Nigerian Army School of Finance & Administration (NASFA) in January 2023. A native of Edo State, General Osifo&apos;s military journey has been marked by remarkable achievements and leadership roles within various units and formations. He was currently promoted to a Major General on the 15th of December, 2023.
+              </p><br/>
+              <p>
+                General Osifo&apos;s journey began when he graduated with a Bachelor of Science (Honours) Degree in Economics from the Nigerian Defence Academy. His dedication and skills were recognized as he received his commission as a Second Lieutenant into the Nigerian Army, being part of the 41st Regular Combatant Course on the 12th of September. Over the years, he has accumulated extensive experience in diverse command and staff positions, serving across multiple divisions.
+              </p><br/>
+              <p>
+                Throughout his distinguished military career, General Osifo has demonstrated exceptional leadership. Notable appointments include his roles as Commander Division Finance and Accounts (CDFA) at Headquarters 3 Division Jos, Director of Finance at the Nigerian Armed Forces Resettlement Center Oshodi, Lagos, and Commander Division Finance and Accounts (CDFA) at 7 Division Finance HQ TC JTF (NE) OPHK. Presently, he serves as the Commandant at the Nigerian Army School of Finance and Administration in Apapa, a position he has held since 2023.
+              </p><br/>
+              <p>
+                General Osifo&apos;s educational journey showcases his commitment to continuous learning. In addition to his Bachelor&apos;s Degree, he holds a Master of Science Degree in Economics and a Doctor of Philosophy Degree in Finance.
+              </p><br/>
+              <p>
+                His professional affiliations include membership and fellowship in esteemed organizations such as the Nigerian Institute of Management, the Institute of Chartered Economists of Nigeria, and the Institute of Certified Public Accountants of Nigeria. General Osifo&apos;s pursuit of knowledge has led him to participate in numerous workshops and seminars at prestigious institutions, further enhancing his expertise.
+              </p><br/>
+              <p>
+                To enhance his military prowess, General Osifo has successfully completed a range of Military Courses. These include the Young Officers Course (Finance) at the Nigerian Army School of Finance and Administration Apapa Lagos, Young Officers Course (Infantry) at the Infantry Centre and School Jaji Nigeria, Cashiers Course at the Nigerian Army School of Finance and Administration Apapa Lagos, Computer Appreciation Course at the Nigerian Army School of Finance and Administration in Apapa, Lagos, Junior Staff Course at the Armed Forces Command and Staff College Jaji, Nigeria, Senior Staff Course at the Armed Forces Command and Staff College Jaji, and the Commander Division Finance and Accounts Course at the Nigerian Army School of Finance and Administration in Apapa, Lagos.
+              </p><br/>
+              <p>
+                General Osifo&apos;s dedication to duty and excellence has resulted in a collection of decorations and awards, including the Forces Service Star (FSS), the Meritorious Service Star (MSS), Passed Staff Course (psc), Passed Junior Staff Course (Pjsc), and the General Operations Medal (GOM).
+              </p><br/>
+              <p>
+                Furthermore, General Osifo has demonstrated his commitment to professional growth through extensive training, as well as his contributions to the field through various publications and research endeavors.
+                Beyond his outstanding military career, General Osifo finds fulfillment in his personal life as well. He is happily married and a proud parent, rounding out his profile as a devoted family man.
+              </p>
             </div>
           </div>
         </section>
@@ -115,7 +123,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-semibold">What is the NASFA Database Management System?</h3>
                 <p className="text-gray-700">
-                  It is a centralized solution for managing course records, scores, and documents for officers and soldiers.
+                  It is a centralized solution for managing course records, scores, and documents for NASFA students.
                 </p>
               </div>
               <div>
@@ -127,7 +135,7 @@ export default function Home() {
               <div>
                 <h3 className="text-lg font-semibold">Who can use this system?</h3>
                 <p className="text-gray-700">
-                  It is designed for students, including officers, soldiers, and administrative staff.
+                  It is designed for NASFA students and administrative staff.
                 </p>
               </div>
             </div>

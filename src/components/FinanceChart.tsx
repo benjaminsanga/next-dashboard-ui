@@ -15,63 +15,63 @@ import {
 const data = [
   {
     name: "Jan",
-    income: 4000,
-    expense: 2400,
+    students: 4000,
+    instructors: 240,
   },
   {
     name: "Feb",
-    income: 3000,
-    expense: 1398,
+    students: 3000,
+    instructors: 198,
   },
   {
     name: "Mar",
-    income: 2000,
-    expense: 9800,
+    students: 2000,
+    instructors: 980,
   },
   {
     name: "Apr",
-    income: 2780,
-    expense: 3908,
+    students: 2780,
+    instructors: 308,
   },
   {
     name: "May",
-    income: 1890,
-    expense: 4800,
+    students: 1890,
+    instructors: 400,
   },
   {
     name: "Jun",
-    income: 2390,
-    expense: 3800,
+    students: 2390,
+    instructors: 300,
   },
   {
     name: "Jul",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 300,
   },
   {
     name: "Aug",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 300,
   },
   {
     name: "Sep",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 400,
   },
   {
     name: "Oct",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 300,
   },
   {
     name: "Nov",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 400,
   },
   {
     name: "Dec",
-    income: 3490,
-    expense: 4300,
+    students: 3490,
+    instructors: 400,
   },
 ];
 
@@ -111,11 +111,11 @@ const FinanceChart = () => {
           />
           <Line
             type="monotone"
-            dataKey="income"
+            dataKey="students"
             stroke="#C3EBFA"
             strokeWidth={5}
           />
-          <Line type="monotone" dataKey="expense" stroke="#CFCEFF" strokeWidth={5}/>
+          <Line type="monotone" dataKey="instructors" stroke="#CFCEFF" strokeWidth={5}/>
         </LineChart>
       </ResponsiveContainer>
     </div>

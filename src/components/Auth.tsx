@@ -33,7 +33,7 @@ export default function Auth() {
           <BiLeftArrowAlt/> <span>Back To Home</span>
         </div>
       </Link>
-      {isLogin ? <div className="w-96 p-4 bg-white shadow-md rounded">
+      <div className="w-96 p-4 bg-white shadow-md rounded">
         <h1 className="text-xl font-bold mb-6">Login</h1>
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
@@ -51,10 +51,11 @@ export default function Auth() {
         />
         <div className="my-5 flex gap-5">
           <button className="w-full bg-blue-500 text-white py-2 rounded" onClick={handleSignIn}>
-            Sign In
+            Continue
           </button>
         </div>
-      </div> : <div className="w-96 p-4 bg-white shadow-md rounded">
+      </div>
+      {/* <div className="w-96 p-4 bg-white shadow-md rounded">
         <h1 className="text-xl font-bold mb-6">Sign Up</h1>
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
@@ -63,7 +64,7 @@ export default function Auth() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {/* <select
+        <select
           className="w-full mb-2 p-2 border rounded text-sm"
           onChange={(e) => setRole(e.target.value)}
         >
@@ -71,7 +72,7 @@ export default function Auth() {
           <option value="admin">Admin</option>
           <option value="instructor">Instructor/Staff</option>
           <option value="student">Student</option>
-        </select> */}
+        </select>
         <input
           className="w-full mb-2 p-2 border rounded text-sm"
           type="password"
@@ -84,13 +85,13 @@ export default function Auth() {
             Sign Up
           </button>
         </div>
-      </div>}
+      </div>
       <div>
         <span 
           className="text-center text-xs text-gray-500 cursor-pointer"
           onClick={() => setIsLogin(!isLogin)}
         >Or {isLogin ? 'Sign up' : 'Login'} instead</span>
-      </div>
+      </div> */}
     </div>
   );
 }

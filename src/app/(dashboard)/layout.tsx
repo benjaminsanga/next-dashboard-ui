@@ -2,6 +2,7 @@ import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "../../../public/images/logo.png"
 
 export default function DashboardLayout({
   children,
@@ -16,8 +17,7 @@ export default function DashboardLayout({
           href="/"
           className="flex items-center justify-center lg:justify-start gap-2"
         >
-          <Image src="/logo.png" alt="logo" width={32} height={32} />
-          <span className="hidden lg:block font-bold">NASFA DBMS</span>
+          <Image src={logo} style={{width: '150px', height: 'auto'}} alt="Logo" unoptimized />
         </Link>
         <Menu />
       </div>

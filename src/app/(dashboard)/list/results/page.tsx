@@ -10,6 +10,7 @@ import {
 } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { Result } from "@/types/admin";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -49,6 +50,11 @@ const ResultListPage = () => {
   const [course, setCourse] = useState("")
   const [name, setName] = useState("")
   const [date, setDate] = useState("")
+  const grades = [
+    { date: '08/12/2024', title: 'Couse Title 1', grade: "A", score: '80'},
+    { date: '08/12/2024', title: 'Couse Title 1', grade: "A-", score: '80' },
+    { date: '08/12/2024', title: 'Couse Title 1', grade: "B+", score: '80' },
+  ]
 
   useEffect(() => {
     const fetchAllResults = async (): Promise<Result[]> => {
@@ -129,11 +135,25 @@ const ResultListPage = () => {
               <Image src="/close.png" alt="" width={14} height={14} />
             </div>
             <div>
+              <PDFDownloadLink
+                document={
+                  <PDFDocument
+                    results={grades}
+                    name={name}
+                    date={date}
+                    course={course}
+                  />
+                }
+                fileName="result-sheet.pdf"
+                className="text-xs mt-5"
+              >
+                Download Result Sheet
+              </PDFDownloadLink>
               <PDFDocument
-                course={course}
+                results={grades}
                 name={name}
                 date={date}
-                institution={"Nigerian Army School of Finance and Administration"}
+                course={course}
               />
             </div>
           </div>

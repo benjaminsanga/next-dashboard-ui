@@ -113,6 +113,44 @@ const SingleStudentPage = () => {
           </div>
         </div>
         {/* BOTTOM */}
+        <div className="mt-4 bg-white rounded-md p-4 m-h-[600px] text-sm text-gray-500">
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Genotype</strong>: {student.genotype}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Student ID</strong>: {student.student_id}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Blood Group</strong>: {student.blood_group}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Marital Status</strong>: {student.marital_status}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Address</strong>: {student.address}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Religion</strong>: {student.religion}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col gap-1 my-3">
+            <strong>Next of kin</strong>
+            <span><strong>Name:</strong> {student.next_of_kin.name}</span>
+            <span><strong>Address:</strong> {student.next_of_kin.address}</span>
+            <span><strong>Phone:</strong> {student.next_of_kin.phone}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col gap-1 my-3">
+            <strong>Close Associate in Lagos</strong>
+            <span><strong>Name:</strong> {student.close_associate_lagos.name}</span>
+            <span><strong>Address:</strong> {student.close_associate_lagos.address}</span>
+            <span><strong>Phone:</strong> {student.close_associate_lagos.phone}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col gap-1 my-3">
+            <strong>Close Associate outside Lagos</strong>
+            <span><strong>Name:</strong> {student.close_associate_outside_lagos.name}</span>
+            <span><strong>Address:</strong> {student.close_associate_outside_lagos.address}</span>
+            <span><strong>Phone:</strong> {student.close_associate_outside_lagos.phone}</span>
+          </div>
+        </div>
         <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
           <h1>Student&apos;s Schedule</h1>
           <BigCalendar />

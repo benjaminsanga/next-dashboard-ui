@@ -12,21 +12,38 @@ export type StudentArgs = {
 };
 
 export interface Student {
-  id:         string;
-  email:      string;
-  password:   string;
-  first_name: string;
-  last_name:  string;
-  phone:      string;
-  address:    string;
-  student_id: string;
-  dob:        Date;
-  sex:        string;
-  photo_url:  string;
-  created_at: Date;
-  course:     string;
-  department: string;
+  id:                            number;
+  email:                         string;
+  password:                      string;
+  first_name:                    string;
+  last_name:                     string;
+  phone:                         string;
+  address:                       string;
+  sex:                           string;
+  photo_url:                     string;
+  student_id:                    string;
+  department:                    string;
+  course:                        string;
+  dob:                           Date;
+  course_length:                 string;
+  religion:                      string;
+  blood_group:                   string;
+  genotype:                      string;
+  marital_status:                string;
+  next_of_kin:                   CloseAssociateLagos;
+  close_associate_lagos:         CloseAssociateLagos;
+  close_associate_outside_lagos: CloseAssociateLagos;
+  created_at:                    Date;
+  updated_at:                    Date;
 }
+
+export interface CloseAssociateLagos {
+  name:          string;
+  phone:         string;
+  address:       string;
+  relationship?: string;
+}
+
 
 
 export interface Instructor {
