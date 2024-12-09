@@ -50,11 +50,9 @@ const ResultListPage = () => {
   const [course, setCourse] = useState("")
   const [name, setName] = useState("")
   const [date, setDate] = useState("")
-  const grades = [
-    { date: '08/12/2024', title: 'Couse Title 1', grade: "A", score: '80'},
-    { date: '08/12/2024', title: 'Couse Title 1', grade: "A-", score: '80' },
-    { date: '08/12/2024', title: 'Couse Title 1', grade: "B+", score: '80' },
-  ]
+  const [studentId, setStudentId] = useState("")
+  const [department, setDepartment] = useState("")
+  const [grades, setGrades] = useState<{ date: string, title: string, grade: string, score: string}[]>([])
 
   useEffect(() => {
     const fetchAllResults = async (): Promise<Result[]> => {
@@ -96,6 +94,14 @@ const ResultListPage = () => {
             setCourse(item.course)
             setName(`${item.first_name} ${item.last_name}`)
             setDate(new Date(item.created_at).toDateString())
+            setDepartment(item.department)
+            setStudentId(item.student__id)
+            setGrades(current => [...current, {
+              date: new Date(item.created_at).toDateString(),
+              grade: item.grade,
+              score: item.score,
+              title: item.course_code
+            }])
             setView(true)
           }}>View</button>
         </div>
@@ -130,7 +136,10 @@ const ResultListPage = () => {
           <div className="bg-white p-4 rounded-md relative w-fit">
             <div
               className="absolute top-4 right-4 cursor-pointer"
-              onClick={() => setView(false)}
+              onClick={() => {
+                setGrades([])
+                setView(false)
+              }}
             >
               <Image src="/close.png" alt="" width={14} height={14} />
             </div>
@@ -142,6 +151,8 @@ const ResultListPage = () => {
                     name={name}
                     date={date}
                     course={course}
+                    department={department}
+                    studentId={studentId}
                   />
                 }
                 fileName="result-sheet.pdf"
@@ -154,6 +165,8 @@ const ResultListPage = () => {
                 name={name}
                 date={date}
                 course={course}
+                department={department}
+                studentId={studentId}
               />
             </div>
           </div>

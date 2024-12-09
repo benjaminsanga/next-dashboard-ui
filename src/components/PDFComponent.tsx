@@ -5,7 +5,6 @@ import {
   Text,
   View,
   StyleSheet,
-  PDFDownloadLink,
 } from "@react-pdf/renderer";
 
 // Define styles for the certificate
@@ -97,7 +96,9 @@ const CertificatePDF: React.FC<{
   course: string;
   results: { title: string; date: string; grade: string; score: string }[];
   date: string;
-}> = ({ name, results, date, course }) => (
+  department: string;
+  studentId: string;
+}> = ({ name, results, date, course, department, studentId }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.border}>
@@ -108,8 +109,8 @@ const CertificatePDF: React.FC<{
           Student Academic Result
         </Text>
         <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Name:</Text> {name}</Text>
-        <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Department:</Text> {name}</Text>
-        <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Student ID:</Text> {name}</Text>
+        <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Department:</Text> {department}</Text>
+        <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Student ID:</Text> {studentId}</Text>
         <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Date:</Text> {date}</Text>
         <Text style={styles.info}><Text style={{fontWeight: "bold"}}>Course:</Text> {course}</Text>
         <View style={{padding: "10px 0"}}></View>

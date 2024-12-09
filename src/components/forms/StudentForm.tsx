@@ -8,6 +8,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 import { departmentOptions, courseOptions } from "@/lib/data";
+import { useState } from "react";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address!" }),
@@ -63,9 +64,27 @@ const StudentForm = ({
     setValue,
     clearErrors,
     reset,
+    watch,
   } = useForm<Inputs>({
     resolver: zodResolver(schema),
   });
+
+  const [filteredDepartments, setFilteredDepartments] = useState<string[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
+
+  const courseLength = watch("course_length") as "long" | "short";
+  const department = watch("department") as string;
+
+  const handleCourseLengthChange = (value: "long" | "short") => {
+    setFilteredDepartments(departmentOptions[value] || []);
+    setValue("department", "");
+    setFilteredCourses([]);
+  };
+
+  const handleDepartmentChange = (value: string) => {
+    setFilteredCourses(courseOptions[value] || []);
+    setValue("course", "");
+  };
 
   const insertStudent = async (student: Inputs): Promise<Inputs | null> => {
     const { error: signupError } = await supabase.auth.signUp({ email: student.email, password: student.password });
@@ -88,6 +107,7 @@ const StudentForm = ({
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
+      toast.loading("Uploading...", { id: '54321' })
       const file = event.target.files[0];
       const formData = new FormData();
 
@@ -110,10 +130,10 @@ const StudentForm = ({
         const data = await res.json();
         setValue("photo_url", data.secure_url);
         clearErrors("photo_url");
-        toast.success("Image uploaded successfully");
+        toast.success("Image uploaded successfully", { id: '54321' });
       } catch (error) {
         console.error("Image upload failed:", error);
-        toast.error("Failed to upload image");
+        toast.error("Failed to upload image", { id: '54321' });
       }
     }
   };
@@ -186,53 +206,55 @@ const StudentForm = ({
         <InputField label="Marital Status" name="marital_status" defaultValue={data?.marital_status} register={register} error={errors.marital_status} />
         <div>
           <label className="text-xs text-gray-500">Course Length</label>
-          <select {...register("course_length")} className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full">
-            <option value="long course">Long Course</option>
-            <option value="short course">Short Course</option>
+          <select
+            {...register("course_length", {
+              onChange: (e) => handleCourseLengthChange(e.target.value as "long" | "short"),
+            })}
+            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+          >
+            <option value="">Choose course length</option>
+            <option value="long">Long Course</option>
+            <option value="short">Short Course</option>
           </select>
-          {errors.course_length?.message && <p>{errors.course_length.message}</p>}
+          {errors.course_length?.message && <p>{errors.course_length.message as string}</p>}
         </div>
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">
             Select Departments
           </label>
           <select
+            {...register("department", {
+              onChange: (e) => handleDepartmentChange(e.target.value),
+            })}
             className="w-full p-2 border border-gray-300 rounded-md text-sm"
-            {...register("department")}
           >
-            <option>Choose department</option>
-            {departmentOptions?.map((department) => (
-              <option key={department} value={department}>
-                {department}
+            <option value="">Choose department</option>
+            {filteredDepartments?.map((dept) => (
+              <option key={dept} value={dept}>
+                {dept}
               </option>
             ))}
           </select>
           {errors.department?.message && (
-            <p className="text-xs text-red-400">
-              {errors.department.message.toString()}
-            </p>
+            <p className="text-xs text-red-400">{errors.department.message as string}</p>
           )}
         </div>
 
         <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">
-            Select Courses
-          </label>
+          <label className="text-xs text-gray-500">Select Course</label>
           <select
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
             {...register("course")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
           >
-            <option>Choose course</option>
-            {courseOptions?.map((course) => (
+            <option value="">Choose course</option>
+            {filteredCourses?.map((course) => (
               <option key={course} value={course}>
                 {course}
               </option>
             ))}
           </select>
           {errors.course?.message && (
-            <p className="text-xs text-red-400">
-              {errors.course.message.toString()}
-            </p>
+            <p className="text-xs text-red-400">{errors.course.message as string}</p>
           )}
         </div>
       </div>

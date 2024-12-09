@@ -66,8 +66,9 @@ export interface Instructor {
 export interface Result {
   id:           string;
   course:       string;
+  course_code:       string;
   grade:        string;
-  score:        number;
+  score:        string;
   remarks:      null;
   date_of_exam: null;
   created_at:   Date;

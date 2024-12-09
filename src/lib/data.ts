@@ -2,35 +2,54 @@
 
 export let role = "admin";
 
-export const departmentOptions = [
-  "Department of Accountancy",
-  "Department of Office Technology Management",
-  "Records and Clerk General Duties",
-  "Military and Service Account Department",
-];
+interface DepartmentOptions {
+  long: string[];
+  short: string[];
+}
 
-export const courseOptions = [
-  "ND1",
-  "ND2",
-  "HND1",
-  "HND2",
-  "X1",
-  "X2",
-  "X3",
-  "CDFA Course",
-  "Account Inspectorate Course",
-  "ICT Management Course",
-  "Cashier Course",
-  "Computer Appreciation Course",
-  "Young Officers Course Finance",
-  "Finance A1",
-  "Finance A2",
-  "Finance A3",
-  "Record Clerk B1 Course",
-  "Record Clerk B2 Course",
-  "Record Clerk B3 Course",
-  "NA Chief Clerk Course",
-];
+interface CourseOptions {
+  [key: string]: string[];
+}
+
+export const departmentOptions: DepartmentOptions = {
+  long: ["Department of Accountancy", "Department of Office Technology Management"],
+  short: ["Military and Service Account Department", "Records and Clerk General Duties"],
+};
+
+export const courseOptions: CourseOptions = {
+  "Department of Accountancy": [
+    "ND 1 Accountancy",
+    "ND 2 Accountancy",
+    "HND 1 Accountancy",
+    "HND 2 Accountancy",
+  ],
+  "Department of Office Technology Management": [
+    "ND 1 OTM",
+    "ND 2 OTM",
+    "HND 1 OTM",
+    "HND 2 OTM",
+  ],
+  "Military and Service Account Department": [
+    "Finance A1",
+    "Finance A2",
+    "Finance A3",
+    "Young Officers Course Finance",
+    "Computer Appreciation Course",
+    "ICT Management Course",
+    "Cashier Course",
+    "Account Inspectorate Course",
+    "CDFA Course",
+  ],
+  "Records and Clerk General Duties": [
+    "Record Clerk B1",
+    "Record Clerk B2",
+    "Record Clerk B3",
+    "Clerk General Duties B1",
+    "Clerk General Duties B2",
+    "Clerk General Duties B3",
+    "NA Chief Clerk Course",
+  ],
+};
 
 export const teachersData = [
   {
