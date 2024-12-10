@@ -91,7 +91,7 @@ const ResultListPage = () => {
       <td>
         <div className="flex items-center gap-2">
           <button className="text-sm p-2" onClick={() => {
-            setCourse(item.course)
+            setCourse(item.course_code)
             setName(`${item.first_name} ${item.last_name}`)
             setDate(new Date(item.created_at).toDateString())
             setDepartment(item.department)
@@ -100,7 +100,7 @@ const ResultListPage = () => {
               date: new Date(item.created_at).toDateString(),
               grade: item.grade,
               score: item.score,
-              title: item.course_code
+              title: item.course.toUpperCase()
             })))
             setView(true)
           }}>View</button>
