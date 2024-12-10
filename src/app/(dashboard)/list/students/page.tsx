@@ -42,10 +42,10 @@ const columns = [
 ];
 
 const StudentListPage = () => {
-  const [students, setStudents] = useState<StudentArgs[]>([])
+  const [students, setStudents] = useState<Student[]>([])
 
   useEffect(() => {
-    const fetchAllStudents = async (): Promise<StudentArgs[]> => {
+    const fetchAllStudents = async (): Promise<Student[]> => {
         const { data, error } = await supabase
             .from('students')
             .select('*');
@@ -54,7 +54,7 @@ const StudentListPage = () => {
             console.error("Error fetching students:", error.message);
             return [];
         }
-        return data as StudentArgs[];
+        return data as Student[];
     };
 
     const loadStudents = async () => {
@@ -98,7 +98,10 @@ const StudentListPage = () => {
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
+            <>
+            <FormModal table="student" type="update" data={item} />
             <FormModal table="student" type="delete" />
+            </>
           )}
         </div>
       </td>

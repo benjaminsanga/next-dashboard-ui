@@ -96,12 +96,12 @@ const ResultListPage = () => {
             setDate(new Date(item.created_at).toDateString())
             setDepartment(item.department)
             setStudentId(item.student__id)
-            setGrades(current => [...current, {
+            setGrades(current => results.filter((i) => i.student__id === item.student__id).map(item => ({
               date: new Date(item.created_at).toDateString(),
               grade: item.grade,
               score: item.score,
               title: item.course_code
-            }])
+            })))
             setView(true)
           }}>View</button>
         </div>
@@ -133,7 +133,7 @@ const ResultListPage = () => {
       <Pagination />
       {view && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-md relative w-fit">
+          <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
             <div
               className="absolute top-4 right-4 cursor-pointer"
               onClick={() => {

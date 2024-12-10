@@ -12,12 +12,12 @@ const menuItems = [
         href: "/",
         visible: ["admin", "teacher", "student", "parent"],
       },
-      {
-        icon: "/teacher.png",
-        label: "Instructors",
-        href: "/list/teachers",
-        visible: ["admin", "teacher"],
-      },
+      // {
+      //   icon: "/teacher.png",
+      //   label: "Instructors",
+      //   href: "/list/teachers",
+      //   visible: ["admin", "teacher"],
+      // },
       {
         icon: "/student.png",
         label: "Students",
@@ -48,12 +48,12 @@ const menuItems = [
       //   href: "/list/lessons",
       //   visible: ["admin", "teacher"],
       // },
-      {
-        icon: "/exam.png",
-        label: "Exams",
-        href: "/list/exams",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
+      // {
+      //   icon: "/exam.png",
+      //   label: "Exams",
+      //   href: "/list/exams",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
       // {
       //   icon: "/assignment.png",
       //   label: "Assignments",

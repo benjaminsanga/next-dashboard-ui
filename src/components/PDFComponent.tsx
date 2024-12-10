@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   page: {
     backgroundColor: "#ffffff",
     padding: 0,
-    margin: 20,
+    margin: 5,
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -20,17 +20,17 @@ const styles = StyleSheet.create({
   },
   border: {
     border: "3px solid #f3f3f3",
-    padding: 20,
+    padding: 10,
     width: "495px",
-    minHeight: "602px",
+    minHeight: "532px",
     display: 'flex',
     flexDirection: 'column',
   },
   header: {
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#6a4c26",
-    marginBottom: 20,
+    marginBottom: 5,
   },
   subHeader: {
     fontSize: 12,
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     fontSize: 12,
-    marginTop: 30,
+    marginTop: 10,
     color: "#6a4c26",
     textAlign: "center",
   },
@@ -141,7 +141,7 @@ const CertificatePDF: React.FC<{
           </View>
         </View>
         <Text style={styles.footer}>
-          Nigerian Army School of Finance and Administration | Excellence in Education
+          NASFA | Excellence in Education
         </Text>
       </View>
     </Page>

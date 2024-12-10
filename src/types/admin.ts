@@ -30,6 +30,10 @@ export interface Student {
   blood_group:                   string;
   genotype:                      string;
   marital_status:                string;
+  middle_name:                   string;
+  personnel_id_number:           string;
+  rank:                          string;
+  medical_status:                string;
   next_of_kin:                   CloseAssociateLagos;
   close_associate_lagos:         CloseAssociateLagos;
   close_associate_outside_lagos: CloseAssociateLagos;

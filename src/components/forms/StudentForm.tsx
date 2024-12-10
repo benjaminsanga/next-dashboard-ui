@@ -16,20 +16,24 @@ const schema = z.object({
     .string()
     .min(8, { message: "Password must be at least 8 characters long!" }),
   first_name: z.string().min(1, { message: "First name is required!" }),
+  middle_name: z.string().optional(),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
   sex: z.enum(["male", "female"], { message: "Sex is required!" }),
   photo_url: z.string().min(1, { message: "File is required!" }),
   student_id: z.string().min(1, { message: "Student ID is required!" }),
+  personnel_id_number: z.string().min(1, { message: "Personnel ID Number is required!" }),
+  rank: z.string().min(1, { message: "Rank is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
   course: z.string().min(1, { message: "Course is required!" }),
   dob: z.preprocess((arg) => (arg ? new Date(arg as string) : undefined), z.date({ message: "DOB is required!" })),
-  course_length: z.enum(["long course", "short course"], { message: "Course length is required!" }),
+  course_length: z.enum(["long", "short"], { message: "Course length is required!" }),
   religion: z.string().min(1, { message: "Religion is required!" }),
   blood_group: z.string().min(1, { message: "Blood group is required!" }),
   genotype: z.string().min(1, { message: "Genotype is required!" }),
-  marital_status: z.string().min(1, { message: "Marital status is required!" }),
+  marital_status: z.enum(["Single", "Married"], { message: "Marital status is required!" }),
+  medical_status: z.enum(["Fit", "Unfit"], { message: "Medical status is required!" }),
   next_of_kin: z.object({
     name: z.string().min(1, { message: "Name is required!" }),
     phone: z.string().min(1, { message: "Phone number is required!" }),
@@ -99,8 +103,11 @@ const StudentForm = ({
       .single();
 
     if (error) {
-      console.error("Error inserting student:", error.message);
+      toast.error(`Error inserting student: ${error.message}`);
       return null;
+    } else {
+      toast.success("Data successfully submitted");
+      reset();
     }
     return data as Inputs;
   };
@@ -140,8 +147,6 @@ const StudentForm = ({
 
   const onSubmit = async (data: any) => {
     const result = await insertStudent(data);
-    toast.success("Data successfully submitted");
-    reset();
   };
 
   const onError = (error: any) => console.log("error:", error);
@@ -161,7 +166,24 @@ const StudentForm = ({
       {/* Personal Information */}
       <div className="flex flex-wrap gap-4">
         <InputField label="First Name" name="first_name" defaultValue={data?.first_name} register={register} error={errors.first_name} />
+        <InputField label="Middle Name" name="middle_name" defaultValue={data?.middle_name} register={register} error={errors.middle_name} />
         <InputField label="Last Name" name="last_name" defaultValue={data?.last_name} register={register} error={errors.last_name} />
+        <InputField label="Personnel ID Number" name="personnel_id_number" defaultValue={data?.personnel_id_number} register={register} error={errors.personnel_id_number} />
+        <InputField label="Rank" name="rank" defaultValue={data?.rank} register={register} error={errors.rank} />
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Medical Status</label>
+          <select
+            {...register("medical_status")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+          >
+            <option value="">Select medical status</option>
+            <option value="Fit">Fit</option>
+            <option value="Unfit">Unfit</option>
+          </select>
+          {errors.medical_status?.message && (
+            <p className="text-xs text-red-400">{errors.medical_status.message}</p>
+          )}
+        </div>
         <InputField label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />
         <InputField label="Address" name="address" defaultValue={data?.address} register={register} error={errors.address} />
         <InputField label="Date of Birth" name="dob" defaultValue={data?.dob} register={register} error={errors.dob} type="date" />
@@ -203,20 +225,36 @@ const StudentForm = ({
         <InputField label="Religion" name="religion" defaultValue={data?.religion} register={register} error={errors.religion} />
         <InputField label="Blood Group" name="blood_group" defaultValue={data?.blood_group} register={register} error={errors.blood_group} />
         <InputField label="Genotype" name="genotype" defaultValue={data?.genotype} register={register} error={errors.genotype} />
-        <InputField label="Marital Status" name="marital_status" defaultValue={data?.marital_status} register={register} error={errors.marital_status} />
+        {/* <InputField label="Marital Status" name="marital_status" defaultValue={data?.marital_status} register={register} error={errors.marital_status} /> */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Marital Status</label>
+          <select
+            {...register("marital_status")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+          >
+            <option value="">Select marital status</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+          </select>
+          {errors.marital_status?.message && (
+            <p className="text-xs text-red-400">{errors.marital_status.message}</p>
+          )}
+        </div>
         <div>
           <label className="text-xs text-gray-500">Course Length</label>
           <select
             {...register("course_length", {
               onChange: (e) => handleCourseLengthChange(e.target.value as "long" | "short"),
             })}
-            className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
           >
             <option value="">Choose course length</option>
             <option value="long">Long Course</option>
             <option value="short">Short Course</option>
           </select>
-          {errors.course_length?.message && <p>{errors.course_length.message as string}</p>}
+          {errors.course_length?.message && 
+            <p className="text-xs text-red-400">{errors.course_length.message as string}</p>
+          }
         </div>
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">
@@ -262,24 +300,24 @@ const StudentForm = ({
       {/* Nested Objects */}
       <h2>Next of Kin</h2>
       <div className="flex flex-wrap gap-4">
-        <InputField label="Name" name="next_of_kin.name" register={register} error={errors.next_of_kin?.name} />
-        <InputField label="Phone" name="next_of_kin.phone" register={register} error={errors.next_of_kin?.phone} />
-        <InputField label="Address" name="next_of_kin.address" register={register} error={errors.next_of_kin?.address} />
-        <InputField label="Relationship" name="next_of_kin.relationship" register={register} error={errors.next_of_kin?.relationship} />
+        <InputField label="Name" name="next_of_kin.name" register={register} error={errors.next_of_kin?.name} defaultValue={data?.next_of_kin?.name} />
+        <InputField label="Phone" name="next_of_kin.phone" register={register} error={errors.next_of_kin?.phone} defaultValue={data?.next_of_kin?.phone} />
+        <InputField label="Address" name="next_of_kin.address" register={register} error={errors.next_of_kin?.address} defaultValue={data?.next_of_kin?.address} />
+        <InputField label="Relationship" name="next_of_kin.relationship" register={register} error={errors.next_of_kin?.relationship} defaultValue={data?.next_of_kin?.relationship} />
       </div>
 
       <h2>Close Associate Within Lagos</h2>
       <div className="flex flex-wrap gap-4">
-        <InputField label="Name" name="close_associate_lagos.name" register={register} error={errors.close_associate_lagos?.name} />
-        <InputField label="Phone" name="close_associate_lagos.phone" register={register} error={errors.close_associate_lagos?.phone} />
-        <InputField label="Address" name="close_associate_lagos.address" register={register} error={errors.close_associate_lagos?.address} />
+        <InputField label="Name" name="close_associate_lagos.name" register={register} error={errors.close_associate_lagos?.name} defaultValue={data?.close_associate_lagos?.name} />
+        <InputField label="Phone" name="close_associate_lagos.phone" register={register} error={errors.close_associate_lagos?.phone} defaultValue={data?.close_associate_lagos?.phone} />
+        <InputField label="Address" name="close_associate_lagos.address" register={register} error={errors.close_associate_lagos?.address} defaultValue={data?.close_associate_lagos?.address} />
       </div>
 
       <h2>Close Associate Outside Lagos</h2>
       <div className="flex flex-wrap gap-4">
-        <InputField label="Name" name="close_associate_outside_lagos.name" register={register} error={errors.close_associate_outside_lagos?.name} />
-        <InputField label="Phone" name="close_associate_outside_lagos.phone" register={register} error={errors.close_associate_outside_lagos?.phone} />
-        <InputField label="Address" name="close_associate_outside_lagos.address" register={register} error={errors.close_associate_outside_lagos?.address} />
+        <InputField label="Name" name="close_associate_outside_lagos.name" register={register} error={errors.close_associate_outside_lagos?.name} defaultValue={data?.close_associate_outside_lagos?.name} />
+        <InputField label="Phone" name="close_associate_outside_lagos.phone" register={register} error={errors.close_associate_outside_lagos?.phone} defaultValue={data?.close_associate_outside_lagos?.phone} />
+        <InputField label="Address" name="close_associate_outside_lagos.address" register={register} error={errors.close_associate_outside_lagos?.address} defaultValue={data?.close_associate_outside_lagos?.address} />
       </div>
 
       <button className="bg-blue-400 text-white p-2 rounded-md">
