@@ -5,14 +5,15 @@ import { z } from "zod";
 import InputField from "../InputField";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const schema = z.object({
   student__id: z.string().min(1, { message: "Student ID is required!" }),
   first_name: z.string().min(1, { message: "First name is required!" }),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
-  year: z.string().min(1, { message: "Year is required!" }),
-  quarter: z.string().min(1, { message: "Quarter is required!" }),
+  acedemic_session: z.string().min(1, { message: "Acedemic Session is required!" }),
+  semester: z.string().min(1, { message: "Semester is required!" }),
   courses: z
     .array(
       z.object({
@@ -28,6 +29,7 @@ const schema = z.object({
             message: "Score must be between 0 and 100!",
           }),
         grade: z.string().min(1, { message: "Grade is required!" }),
+        credit_unit: z.string().min(1, { message: "Credit Unit is required!" }),
       })
     )
     .min(1, { message: "At least one course is required!" }),
@@ -35,7 +37,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-const ResultForm = ({
+const LongResultForm = ({
   type,
   data,
 }: {
@@ -66,17 +68,13 @@ const ResultForm = ({
   const studentId = watch("student__id");
 
   const calculateGrade = (score: number): string => {
-    if (score >= 85 && score <= 100) return "A";
-    if (score >= 75 && score < 85) return "B+";
-    if (score >= 70 && score < 75) return "B";
-    if (score >= 65 && score < 70) return "C+";
-    if (score >= 60 && score < 65) return "HC";
-    if (score >= 55 && score < 60) return "C";
-    if (score >= 50 && score < 55) return "LC";
-    if (score >= 40 && score < 50) return "C-";
-    if (score >= 0 && score < 40) return "F";
+    if (score >= 80 && score <= 100) return "A";
+    if (score >= 60 && score < 79) return "B";
+    if (score >= 50 && score < 59) return "C";
+    if (score >= 40 && score < 49) return "D";
+    if (score >= 0 && score < 39) return "F";
     return "Invalid Score";
-};
+  };
 
   const handleGetStudentInfo = async () => {
     toast.loading("Fetching student data", { id: "54321" });
@@ -186,16 +184,16 @@ const ResultForm = ({
           disabled
         />
         <InputField
-          label="Year"
-          name={`year`}
+          label="Academic Session"
+          name={`academic_session`}
           register={register}
-          error={errors.year}
+          error={errors.acedemic_session}
         />
         <InputField
-          label="Quarter"
-          name={`quarter`}
+          label="Semester"
+          name={`semester`}
           register={register}
-          error={errors.quarter}
+          error={errors.semester}
         />
         {fields.map((field, index) => (
           <div key={field.id} className="w-full flex gap-2">
@@ -204,6 +202,12 @@ const ResultForm = ({
               name={`courses.${index}.course_code`}
               register={register}
               error={errors.courses?.[index]?.course_code}
+            />
+            <InputField
+              label="Credit Unit"
+              name={`credit_unit`}
+              register={register}
+              error={errors.courses?.[index]?.credit_unit}
             />
             <InputField
               label="Score"
@@ -241,7 +245,7 @@ const ResultForm = ({
 
         <button
           type="button"
-          onClick={() => append({ course_code: "", score: 0, grade: "" })}
+          onClick={() => append({ course_code: "", score: 0, grade: "", credit_unit: "" })}
           className="text-blue-500 text-sm"
         >
           Add Subject
@@ -254,4 +258,4 @@ const ResultForm = ({
   );
 };
 
-export default ResultForm;
+export default LongResultForm;

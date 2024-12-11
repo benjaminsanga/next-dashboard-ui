@@ -62,8 +62,14 @@ const menuItems = [
       // },
       {
         icon: "/result.png",
-        label: "Results",
+        label: "Short Course Results",
         href: "/list/results",
+        visible: ["admin", "teacher", "student", "parent"],
+      },
+      {
+        icon: "/result.png",
+        label: "Long Course Results",
+        href: "/list/results/long",
         visible: ["admin", "teacher", "student", "parent"],
       },
       // {
