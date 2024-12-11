@@ -11,6 +11,7 @@ const schema = z.object({
   first_name: z.string().min(1, { message: "First name is required!" }),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
+  course: z.string().min(1, { message: "Course is required!" }),
   year: z.string().min(1, { message: "Year is required!" }),
   quarter: z.string().min(1, { message: "Quarter is required!" }),
   courses: z
@@ -35,7 +36,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-const ResultForm = ({
+const ShortCourseResultForm = ({
   type,
   data,
 }: {
@@ -95,6 +96,7 @@ const ResultForm = ({
       setValue("first_name", data.first_name || "");
       setValue("last_name", data.last_name || "");
       setValue("department", data.department || "");
+      setValue("course", data.course || "");
 
       toast.success("Fetched student data", { id: "54321" });
     } catch (err) {
@@ -117,11 +119,13 @@ const ResultForm = ({
         grade: course.grade,
         first_name: getValues("first_name"),
         last_name: getValues("last_name"),
+        year: getValues("year"),
+        quarter: getValues("quarter"),
       }));
   
       // Insert courses into the student_results table
       const { error: coursesInsertError } = await supabase
-        .from("student_results")
+        .from("short_course_results")
         .insert(coursesData);
   
       if (coursesInsertError) {
@@ -183,6 +187,13 @@ const ResultForm = ({
           name="department"
           register={register}
           error={errors.department}
+          disabled
+        />
+        <InputField
+          label="Course"
+          name="course"
+          register={register}
+          error={errors.course}
           disabled
         />
         <InputField
@@ -254,4 +265,4 @@ const ResultForm = ({
   );
 };
 
-export default ResultForm;
+export default ShortCourseResultForm;

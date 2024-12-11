@@ -98,7 +98,11 @@ const CertificatePDF: React.FC<{
   department: string;
   studentId: string;
   totalGrade: string;
-}> = ({ name, results, date, course, department, studentId, totalGrade }) => (
+  year?: string;
+  quarter?: string;
+  academic_session?: string;
+  semester?: string;
+}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.border}>
@@ -121,6 +125,18 @@ const CertificatePDF: React.FC<{
         <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Course:</Text> {course}
         </Text>
+        {!!year && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Year:</Text> {year}
+        </Text>}
+        {!!quarter && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Quarter:</Text> {quarter}
+        </Text>}
+        {!!academic_session && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Year:</Text> {academic_session}
+        </Text>}
+        {!!semester && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Quarter:</Text> {semester}
+        </Text>}
         <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Total Grade:</Text> {totalGrade}
         </Text>

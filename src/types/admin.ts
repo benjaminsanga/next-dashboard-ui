@@ -78,6 +78,10 @@ export interface Result {
   created_at:   Date;
   student__id:  string;
   department:   string;
+  year?:   string;
+  quarter?:   string;
+  academic_session?:   string;
+  semester?:   string;
   photo_url:    string;
   first_name:   string;
   last_name:    string;

@@ -49,6 +49,8 @@ const ResultListPage = () => {
   const [date, setDate] = useState("")
   const [studentId, setStudentId] = useState("")
   const [department, setDepartment] = useState("")
+  const [year, setYear] = useState("")
+  const [quarter, setQuarter] = useState("")
   const [totalGrade, setTotalGrade] = useState("")
   const [grades, setGrades] = useState<{ title: string, grade: string, score: string}[]>([])
   const [uniqueStudents, setUniqueStudents] = useState<any[]>([])
@@ -66,11 +68,16 @@ const ResultListPage = () => {
             score: 0,
             created_at: item.created_at,
             department: item.department,
+            year: item.year,
+            quarter: item.quarter,
             total_score: 0,
             course: item.course,
           };
         }
         acc[studentId].courses_count += 1;
+        acc[studentId].year = !!item.year ? item.year : '';
+        acc[studentId].quarter = !!item.quarter ? item.quarter : '';
+        acc[studentId].department = !!item.department ? item.department : '';
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
@@ -82,7 +89,7 @@ const ResultListPage = () => {
   useEffect(() => {
     const fetchAllResults = async (): Promise<Result[]> => {
         const { data, error } = await supabase
-            .from('student_results')
+            .from('short_course_results')
             .select('*');
         
         if (error) {
@@ -131,6 +138,8 @@ const ResultListPage = () => {
             setName(`${item.first_name} ${item.last_name}`)
             setDate(new Date(item.created_at).toDateString())
             setDepartment(item.department)
+            setYear(item.year)
+            setQuarter(item.quarter)
             setStudentId(item.student__id)
             setTotalGrade(calculateGrade(item.total_score / item.courses_count))
             setGrades(current => results.filter((i) => i.student__id === item.student__id).map(item => ({
@@ -192,6 +201,8 @@ const ResultListPage = () => {
                     department={department}
                     studentId={studentId}
                     totalGrade={totalGrade}
+                    year={year}
+                    quarter={quarter}
                   />
                 }
                 fileName="result-sheet.pdf"
@@ -207,6 +218,8 @@ const ResultListPage = () => {
                 department={department}
                 studentId={studentId}
                 totalGrade={totalGrade}
+                year={year}
+                quarter={quarter}
               />
             </div>
           </div>

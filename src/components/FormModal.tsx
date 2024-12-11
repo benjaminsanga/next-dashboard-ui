@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
-import LongResultForm from "./forms/LongResultForm";
 
 // USE LAZY LOADING
 
@@ -16,7 +15,10 @@ const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
   loading: () => <h1>Loading...</h1>,
 });
-const ResultForm = dynamic(() => import("./forms/ResultForm"), {
+const ShortCourseResultForm = dynamic(() => import("./forms/ShortCourseResultForm"), {
+  loading: () => <h1>Loading...</h1>,
+});
+const LongCourseResultForm = dynamic(() => import("./forms/LongCourseResultForm"), {
   loading: () => <h1>Loading...</h1>,
 });
 
@@ -25,8 +27,8 @@ const forms: {
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   student: (type, data) => <StudentForm type={type} data={data} />,
-  result: (type, data) => <ResultForm type={type} data={data} />,
-  longResult: (type, data) => <LongResultForm type={type} data={data} />,
+  result: (type, data) => <ShortCourseResultForm type={type} data={data} />,
+  longResult: (type, data) => <LongCourseResultForm type={type} data={data} />,
 };
 
 const FormModal = ({

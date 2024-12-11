@@ -49,9 +49,12 @@ const ResultListPage = () => {
   const [date, setDate] = useState("")
   const [studentId, setStudentId] = useState("")
   const [department, setDepartment] = useState("")
+  const [academicSession, setAcademicSession] = useState("")
+  const [semester, setSemester] = useState("")
   const [totalGrade, setTotalGrade] = useState("")
   const [grades, setGrades] = useState<{ title: string, grade: string, score: string}[]>([])
   const [uniqueStudents, setUniqueStudents] = useState<any[]>([])
+console.log("uniqueStudents:", uniqueStudents);
 
   useEffect(() => {
     const value = Object.values(
@@ -66,11 +69,16 @@ const ResultListPage = () => {
             score: 0,
             created_at: item.created_at,
             department: item.department,
+            academic_session: item.academic_session,
+            semester: item.semester,
             total_score: 0,
             course: item.course,
           };
         }
         acc[studentId].courses_count += 1;
+        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
+        acc[studentId].semester = !!item.semester ? item.semester : '';
+        acc[studentId].course = !!item.course ? item.course : '';
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
@@ -82,7 +90,7 @@ const ResultListPage = () => {
   useEffect(() => {
     const fetchAllResults = async (): Promise<Result[]> => {
         const { data, error } = await supabase
-            .from('student_results')
+            .from('long_course_results')
             .select('*');
         
         if (error) {
@@ -131,12 +139,14 @@ const ResultListPage = () => {
             setName(`${item.first_name} ${item.last_name}`)
             setDate(new Date(item.created_at).toDateString())
             setDepartment(item.department)
+            setAcademicSession(item.academic_session)
+            setSemester(item.semester)
             setStudentId(item.student__id)
             setTotalGrade(calculateGrade(item.total_score / item.courses_count))
             setGrades(current => results.filter((i) => i.student__id === item.student__id).map(item => ({
               grade: item.grade,
               score: item.score,
-              title: item.course.toUpperCase()
+              title: item?.course?.toUpperCase()
             })))
             setView(true)
           }}>View</button>
@@ -146,7 +156,7 @@ const ResultListPage = () => {
   );
   
   return (
-    uniqueStudents.length === 0 ? <div className="w-full h-20 flex justify-center items-center">
+    !uniqueStudents ? <div className="w-full h-20 flex justify-center items-center">
       <LoaderIcon/>
     </div> : <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -192,6 +202,8 @@ const ResultListPage = () => {
                     department={department}
                     studentId={studentId}
                     totalGrade={totalGrade}
+                    academic_session={academicSession}
+                    semester={semester}
                   />
                 }
                 fileName="result-sheet.pdf"
@@ -207,6 +219,8 @@ const ResultListPage = () => {
                 department={department}
                 studentId={studentId}
                 totalGrade={totalGrade}
+                academic_session={academicSession}
+                semester={semester}
               />
             </div>
           </div>
