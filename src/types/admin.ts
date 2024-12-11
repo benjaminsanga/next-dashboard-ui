@@ -77,6 +77,7 @@ export interface Result {
   date_of_exam: null;
   created_at:   Date;
   student__id:  string;
+  student_id?:  string;
   department:   string;
   year?:   string;
   quarter?:   string;

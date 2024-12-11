@@ -59,13 +59,13 @@ console.log("uniqueStudents:", uniqueStudents);
   useEffect(() => {
     const value = Object.values(
       results.reduce((acc: Record<string, any>, item) => {
-        const studentId = item.student__id;
+        const studentId = item.student_id || '';
         if (!acc[studentId]) {
           acc[studentId] = {
             courses_count: 0,
             first_name: item.first_name,
             last_name: item.last_name,
-            student__id: item.student__id,
+            student_id: item.student_id,
             score: 0,
             created_at: item.created_at,
             department: item.department,
@@ -123,12 +123,12 @@ console.log("uniqueStudents:", uniqueStudents);
   
   const renderRow = (item: any) => (
     <tr
-      key={item.student__id}
+      key={item.student_id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
       <td>{item.first_name} {item.last_name}</td>
-      <td className="hidden md:table-cell">{item.student__id}</td>
+      <td className="hidden md:table-cell">{item.student_id}</td>
       <td className="hidden md:table-cell">{item.score}</td>
       {/* <td className="hidden md:table-cell">{item.course}</td> */}
       <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
@@ -141,12 +141,12 @@ console.log("uniqueStudents:", uniqueStudents);
             setDepartment(item.department)
             setAcademicSession(item.academic_session)
             setSemester(item.semester)
-            setStudentId(item.student__id)
+            setStudentId(item.student_id)
             setTotalGrade(calculateGrade(item.total_score / item.courses_count))
-            setGrades(current => results.filter((i) => i.student__id === item.student__id).map(item => ({
+            setGrades(current => results.filter((i) => i.student_id === item.student_id).map(item => ({
               grade: item.grade,
               score: item.score,
-              title: item?.course?.toUpperCase()
+              title: item?.course_code?.toUpperCase()
             })))
             setView(true)
           }}>View</button>
