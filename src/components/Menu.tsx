@@ -90,12 +90,12 @@ const menuItems = [
       //   href: "/list/messages",
       //   visible: ["admin", "teacher", "student", "parent"],
       // },
-      {
-        icon: "/announcement.png",
-        label: "Announcements",
-        href: "/list/announcements",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
+      // {
+      //   icon: "/announcement.png",
+      //   label: "Announcements",
+      //   href: "/list/announcements",
+      //   visible: ["admin", "teacher", "student", "parent"],
+      // },
     ],
   },
   {

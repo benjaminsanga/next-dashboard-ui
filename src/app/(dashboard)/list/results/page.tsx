@@ -63,7 +63,7 @@ const ResultListPage = () => {
     department: "",
     year: "",
   });
-
+  
   useEffect(() => {
     const value = Object.values(
       results.reduce((acc: Record<string, any>, item) => {
@@ -85,12 +85,21 @@ const ResultListPage = () => {
         }
         acc[studentId].courses_count += 1;
         acc[studentId].total_score += item.score;
+
+        // Preserve existing department if already set
+        if (!acc[studentId].department && item.department) {
+          acc[studentId].department = item.department;
+        }
+
+        acc[studentId].year = !!item.year ? item.year : acc[studentId].year;
+        acc[studentId].quarter = !!item.quarter ? item.quarter : acc[studentId].quarter;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
       }, {} as Record<string, any>)
     );
     setUniqueStudents(value);
   }, [results]);
+
 
   useEffect(() => {
     const fetchAllResults = async (): Promise<Result[]> => {
@@ -160,7 +169,7 @@ const ResultListPage = () => {
         {item.first_name} {item.last_name}
       </td>
       <td className="hidden md:table-cell">{item.student__id}</td>
-      <td className="hidden md:table-cell">{item.score}</td>
+      <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
       <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
       <td>
         <div className="flex items-center gap-2">
@@ -326,6 +335,8 @@ const ResultListPage = () => {
                       totalGrade={totalGrade}
                       year={year}
                       quarter={quarter}
+                      academic_session={null}
+                      semester={null}
                     />
                   }
                   fileName="result-sheet.pdf"
@@ -343,6 +354,8 @@ const ResultListPage = () => {
                   totalGrade={totalGrade}
                   year={year}
                   quarter={quarter}
+                  academic_session={null}
+                  semester={null}
                 />
               </div>
             </div>

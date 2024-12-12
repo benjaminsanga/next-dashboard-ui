@@ -97,12 +97,13 @@ const CertificatePDF: React.FC<{
   date: string;
   department: string;
   studentId: string;
-  totalGrade: string;
-  year?: string;
-  quarter?: string;
-  academic_session?: string;
-  semester?: string;
-}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester }) => (
+  totalGrade?: string;
+  year?: string | null;
+  quarter?: string | null;
+  academic_session?: string | null;
+  semester?: string | null;
+  gpa?: string | number;
+}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester, gpa }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.border}>
@@ -125,21 +126,24 @@ const CertificatePDF: React.FC<{
         <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Course:</Text> {course}
         </Text>
-        {!!year && <Text style={styles.info}>
+        {year !== null && <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Year:</Text> {year}
         </Text>}
-        {!!quarter && <Text style={styles.info}>
+        {quarter !== null && <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Quarter:</Text> {quarter}
         </Text>}
-        {!!academic_session && <Text style={styles.info}>
-          <Text style={{ fontWeight: "bold" }}>Year:</Text> {academic_session}
+        {academic_session !== null && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Academic Session:</Text> {academic_session}
         </Text>}
-        {!!semester && <Text style={styles.info}>
-          <Text style={{ fontWeight: "bold" }}>Quarter:</Text> {semester}
+        {semester !== null && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Semester:</Text> {semester}
         </Text>}
-        <Text style={styles.info}>
+        {!!totalGrade && <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Total Grade:</Text> {totalGrade}
-        </Text>
+        </Text>}
+        {!!gpa && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>GPA:</Text> {gpa}
+        </Text>}
         <View style={{ padding: "10px 0" }}></View>
         <View style={styles.tableRow}>
           <Text style={{ ...styles.tableHead, ...styles.tableColumnCourse, paddingRight: 10 }}>

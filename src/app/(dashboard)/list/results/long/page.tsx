@@ -25,8 +25,44 @@ const ResultListPage = () => {
   const [results, setResults] = useState<Result[]>([]);
   const [uniqueStudents, setUniqueStudents] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // PDF modal state
+  const [course, setCourse] = useState("");
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [department, setDepartment] = useState("");
+  const [academicSession, setAcademicSession] = useState("")
+  const [semester, setSemester] = useState("")
+  const [totalGrade, setTotalGrade] = useState("");
+  const [grades, setGrades] = useState<{ title: string; grade: string; score: string; credit_unit: number }[]>([]);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
-  const [filters, setFilters] = useState({ studentId: "", department: "", year: "" });
+  const [filters, setFilters] = useState({
+    studentId: "",
+    department: "",
+    year: "",
+  });
+
+  const calculateGrade = (score: number): string => {
+    if (score >= 80) return "A";
+    if (score >= 60) return "B";
+    if (score >= 50) return "C";
+    if (score >= 40) return "D";
+    return "F";
+  };
+
+  const calculateGPA = (courses: any[]): number => {
+    let totalGradePoints = 0;
+    let totalCreditUnits = 0;
+    
+    courses.forEach(({ grade, credit_unit }: { grade: string; credit_unit: number}) => {
+      const gradePoint = grade === "A" ? 4 : grade === "B" ? 3 : grade === "C" ? 2 : grade === "D" ? 1 : 0;
+      totalGradePoints += gradePoint * credit_unit;
+      totalCreditUnits += credit_unit;
+    });
+
+    return totalCreditUnits > 0 ? Number(parseFloat(`${(totalGradePoints / totalCreditUnits)}`).toFixed(2)) : 0;
+  };
 
   useEffect(() => {
     const processedStudents = Object.values(
@@ -48,6 +84,9 @@ const ResultListPage = () => {
           };
         }
         acc[studentId].courses_count += 1;
+        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
+        acc[studentId].semester = !!item.semester ? item.semester : '';
+        acc[studentId].course = !!item.course ? item.course : '';
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
@@ -105,6 +144,9 @@ const ResultListPage = () => {
           };
         }
         acc[studentId].courses_count += 1;
+        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
+        acc[studentId].semester = !!item.semester ? item.semester : '';
+        acc[studentId].course = !!item.course ? item.course : '';
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
@@ -134,6 +176,9 @@ const ResultListPage = () => {
           };
         }
         acc[studentId].courses_count += 1;
+        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
+        acc[studentId].semester = !!item.semester ? item.semester : '';
+        acc[studentId].course = !!item.course ? item.course : '';
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
@@ -231,8 +276,34 @@ const ResultListPage = () => {
           <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
           <td>{item.first_name} {item.last_name}</td>
           <td className="hidden md:table-cell">{item.student_id}</td>
-          <td className="hidden md:table-cell">{item.score}</td>
+          <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
           <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
+          <td>
+          <div className="flex items-center gap-2">
+            <button
+              className="text-sm p-2"
+              onClick={() => {
+                setCourse(item.course);
+                setName(`${item.first_name} ${item.last_name}`);
+                setDate(new Date(item.created_at).toDateString());
+                setDepartment(item.department)
+                setAcademicSession(item.academic_session)
+                setSemester(item.semester)
+                setStudentId(item.student_id)
+                setTotalGrade(calculateGrade(item.total_score / item.courses_count))
+                setGrades(results.filter((i) => i.student_id === item.student_id).map(item => ({
+                  grade: item.grade,
+                  score: item.score,
+                  title: item?.course_code?.toUpperCase(),
+                  credit_unit: item?.credit_unit ?? 0
+                })))
+                setView(true);
+              }}
+            >
+              View
+            </button>
+          </div>
+        </td>
         </tr>
       )} data={filteredStudents} />
 
@@ -243,6 +314,59 @@ const ResultListPage = () => {
       >
         Clear Filters
       </button>
+      {view && (
+          <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+            <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
+              <div
+                className="absolute top-4 right-4 cursor-pointer"
+                onClick={() => {
+                  setGrades([]);
+                  setView(false);
+                }}
+              >
+                <Image src="/close.png" alt="" width={14} height={14} />
+              </div>
+              <div>
+                <PDFDownloadLink
+                  document={
+                    <PDFDocument
+                      results={grades}
+                      name={name}
+                      date={date}
+                      course={course}
+                      department={department}
+                      studentId={studentId}
+                      // totalGrade={totalGrade}
+                      academic_session={academicSession}
+                      semester={semester}
+                      year={null}
+                      quarter={null}
+                      gpa={calculateGPA(grades)}
+                    />
+                  }
+                  fileName="result-sheet.pdf"
+                  className="text-xs mt-5"
+                >
+                  Download Result Sheet
+                </PDFDownloadLink>
+                <PDFDocument
+                  results={grades}
+                  name={name}
+                  date={date}
+                  course={course}
+                  department={department}
+                  studentId={studentId}
+                  // totalGrade={totalGrade}
+                  academic_session={academicSession}
+                  semester={semester}
+                  year={null}
+                  quarter={null}
+                  gpa={calculateGPA(grades)}
+                />
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

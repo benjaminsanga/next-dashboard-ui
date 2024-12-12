@@ -125,6 +125,7 @@ const LongCourseResultForm = ({
         academic_session: formData.academic_session,
         semester: formData.semester,
         course_code: course.course_code,
+        course: formData.course,
         credit_unit: course.credit_unit,
         score: course.score,
         grade: calculateGrade(course.score),

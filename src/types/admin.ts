@@ -73,6 +73,7 @@ export interface Result {
   course_code:       string;
   grade:        string;
   score:        string;
+  credit_unit?:       number;
   remarks:      null;
   date_of_exam: null;
   created_at:   Date;
