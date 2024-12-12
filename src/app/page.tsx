@@ -84,7 +84,7 @@ export default function Home() {
               />
             </div>
             <div className="md:w-4/5 w-2/3 lg:text-left text-center md:pl-8">
-              <p className='text-2xl font-bold mb-3'>Maj. Gen. JE OSIFO</p>
+              <p className='text-2xl font-bold mb-3'>Major General JE OSIFO</p>
               <h2 className="text-lg font-bold mb-5">Commandant</h2>
               <p>
                 Major General Julius Ehioze Osifo, a distinguished and decorated veteran, assumed the role of the 51st Commandant of the Nigerian Army School of Finance & Administration (NASFA) in January 2023. A native of Edo State, General Osifo&apos;s military journey has been marked by remarkable achievements and leadership roles within various units and formations. He was currently promoted to a Major General on the 15th of December, 2023.
