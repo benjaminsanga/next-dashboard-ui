@@ -32,7 +32,7 @@ const UserCard = ({ type }: { type: string }) => {
   useEffect(() => {
     const fetchAllStudents = async (): Promise<StudentArgs[]> => {
         const { data, error } = await supabase
-            .from('students')
+            .from('short_course_students')
             .select('*');
         
         if (error) {

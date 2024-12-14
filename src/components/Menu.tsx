@@ -20,8 +20,14 @@ const menuItems = [
       // },
       {
         icon: "/student.png",
-        label: "Students",
-        href: "/list/students",
+        label: "Short Course Students",
+        href: "/list/students/short-course",
+        visible: ["admin", "teacher"],
+      },
+      {
+        icon: "/student.png",
+        label: "Long Course Students",
+        href: "/list/students/long-course",
         visible: ["admin", "teacher"],
       },
       // {

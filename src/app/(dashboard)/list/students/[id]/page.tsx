@@ -3,7 +3,7 @@ import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalender";
 import Performance from "@/components/Performance";
 import { supabase } from "@/lib/supabase";
-import { Student } from "@/types/admin";
+import { ShortCourseStudent } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -13,12 +13,12 @@ import { LoaderIcon } from "react-hot-toast";
 const SingleStudentPage = () => {
   const {id} = useParams()
 
-  const [student, setStudent] = useState<Student>()
+  const [student, setStudent] = useState<ShortCourseStudent>()
 
   useEffect(() => {
-    const fetchStudentById = async (id: string): Promise<Student | null> => {
+    const fetchStudentById = async (id: string): Promise<ShortCourseStudent | null> => {
       const { data, error } = await supabase
-        .from('students')
+        .from('short_course_students')
         .select('*')
         .eq('id', id)
         .single();
@@ -27,12 +27,12 @@ const SingleStudentPage = () => {
         console.error("Error fetching student:", error.message);
         return null;
       }
-      return data as Student;
+      return data as ShortCourseStudent;
     };
 
     const loadStudent = async () => {
         const result = await fetchStudentById(id as string);
-        setStudent(result as Student);
+        setStudent(result as ShortCourseStudent);
     };
 
     loadStudent();

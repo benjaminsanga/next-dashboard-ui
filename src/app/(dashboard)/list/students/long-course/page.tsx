@@ -5,7 +5,7 @@ import Table from "@/components/Table";
 // import TableSearch from "@/components/TableSearch";
 import { role, studentsData } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
-import { Student, StudentArgs } from "@/types/admin";
+import { LongCourseStudent } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -16,8 +16,8 @@ const columns = [
     accessor: "info",
   },
   {
-    header: "Student ID",
-    accessor: "studentId",
+    header: "Matric Number",
+    accessor: "matric_number",
     className: "hidden md:table-cell",
   },
   {
@@ -41,20 +41,20 @@ const columns = [
   },
 ];
 
-const StudentListPage = () => {
-  const [students, setStudents] = useState<Student[]>([])
+const LongCourseStudentListPage = () => {
+  const [students, setStudents] = useState<LongCourseStudent[]>([])
 
   useEffect(() => {
-    const fetchAllStudents = async (): Promise<Student[]> => {
+    const fetchAllStudents = async (): Promise<LongCourseStudent[]> => {
         const { data, error } = await supabase
-            .from('students')
+            .from('long_course_students')
             .select('*');
         
         if (error) {
             console.error("Error fetching students:", error.message);
             return [];
         }
-        return data as Student[];
+        return data as LongCourseStudent[];
     };
 
     const loadStudents = async () => {
@@ -65,7 +65,7 @@ const StudentListPage = () => {
     loadStudents();
   }, []);
   
-  const renderRow = (item: Student) => (
+  const renderRow = (item: LongCourseStudent) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
@@ -83,7 +83,7 @@ const StudentListPage = () => {
           <p className="text-xs text-gray-500">{item.course}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.student_id}</td>
+      <td className="hidden md:table-cell">{item.matric_number}</td>
       <td className="hidden md:table-cell capitalize">{item.sex}</td>
       <td className="hidden md:table-cell">{item.phone}</td>
       <td className="hidden md:table-cell">{item.address}</td>
@@ -99,8 +99,8 @@ const StudentListPage = () => {
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
             <>
-            <FormModal table="student" type="update" data={item} />
-            <FormModal table="student" type="delete" />
+            <FormModal table="longCoursestudent" type="update" data={item} />
+            <FormModal table="longCoursestudent" type="delete" />
             </>
           )}
         </div>
@@ -112,7 +112,7 @@ const StudentListPage = () => {
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h1 className="hidden md:block text-lg font-semibold">All Students</h1>
+        <h1 className="hidden md:block text-lg font-semibold">All Long Course Students</h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           {/* <TableSearch /> */}
           <div className="flex items-center gap-4 self-end">
@@ -126,17 +126,18 @@ const StudentListPage = () => {
               // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
               //   <Image src="/plus.png" alt="" width={14} height={14} />
               // </button>
-              <FormModal table="student" type="create"/>
+              <FormModal table="longCoursestudent" type="create"/>
             )}
           </div>
         </div>
       </div>
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={students} />
+      {students.length === 0 && <p className="text-center text-gray-500 text-sm py-8">No records, yet</p>}
       {/* PAGINATION */}
       <Pagination />
     </div>
   );
 };
 
-export default StudentListPage;
+export default LongCourseStudentListPage;

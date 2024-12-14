@@ -28,7 +28,7 @@ const schema = z.object({
   department: z.string().min(1, { message: "Department is required!" }),
   course: z.string().min(1, { message: "Course is required!" }),
   dob: z.preprocess((arg) => (arg ? new Date(arg as string) : undefined), z.date({ message: "DOB is required!" })),
-  course_length: z.enum(["long", "short"], { message: "Course length is required!" }),
+  // course_length: z.enum(["long", "short"], { message: "Course length is required!" }),
   religion: z.string().min(1, { message: "Religion is required!" }),
   blood_group: z.string().min(1, { message: "Blood group is required!" }),
   genotype: z.string().min(1, { message: "Genotype is required!" }),
@@ -54,7 +54,7 @@ const schema = z.object({
 
 type Inputs = z.infer<typeof schema>;
 
-const StudentForm = ({
+const ShortCourseStudentForm = ({
   type,
   data,
 }: {
@@ -73,17 +73,13 @@ const StudentForm = ({
     resolver: zodResolver(schema),
   });
 
-  const [filteredDepartments, setFilteredDepartments] = useState<string[]>([]);
+  // const [filteredDepartments, setFilteredDepartments] = useState<string[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
 
-  const courseLength = watch("course_length") as "long" | "short";
+  // const courseLength = watch("course_length") as "long" | "short";
   const department = watch("department") as string;
 
-  const handleCourseLengthChange = (value: "long" | "short") => {
-    setFilteredDepartments(departmentOptions[value] || []);
-    setValue("department", "");
-    setFilteredCourses([]);
-  };
+  const filteredDepartments = departmentOptions["long"];
 
   const handleDepartmentChange = (value: string) => {
     setFilteredCourses(courseOptions[value] || []);
@@ -98,7 +94,7 @@ const StudentForm = ({
     } else toast.success("Sign-up successful...");
 
     const { data, error } = await supabase
-      .from('students')
+      .from('short_course_students')
       .insert([student])
       .single();
 
@@ -153,7 +149,7 @@ const StudentForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit, onError)}>
-      <h1 className="text-xl font-semibold">Create a new student</h1>
+      <h1 className="text-xl font-semibold">Create a new short course student</h1>
 
       {/* Existing Fields */}
       <div className="flex flex-wrap gap-4">
@@ -240,7 +236,7 @@ const StudentForm = ({
             <p className="text-xs text-red-400">{errors.marital_status.message}</p>
           )}
         </div>
-        <div>
+        {/* <div>
           <label className="text-xs text-gray-500">Course Length</label>
           <select
             {...register("course_length", {
@@ -255,7 +251,7 @@ const StudentForm = ({
           {errors.course_length?.message && 
             <p className="text-xs text-red-400">{errors.course_length.message as string}</p>
           }
-        </div>
+        </div> */}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">
             Select Departments
@@ -327,4 +323,4 @@ const StudentForm = ({
   );
 };
 
-export default StudentForm;
+export default ShortCourseStudentForm;
