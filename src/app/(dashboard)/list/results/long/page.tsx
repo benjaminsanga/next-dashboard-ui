@@ -14,7 +14,7 @@ import { LoaderIcon } from "react-hot-toast";
 const columns = [
   { header: "Subjects Count", accessor: "name" },
   { header: "Student", accessor: "student" },
-  { header: "Student ID", accessor: "student_id", className: "hidden md:table-cell" },
+  { header: "Matric Number", accessor: "matric_number", className: "hidden md:table-cell" },
   { header: "Avg. Score", accessor: "score", className: "hidden md:table-cell" },
   { header: "Date", accessor: "date", className: "hidden md:table-cell" },
   { header: "Actions", accessor: "action" },
@@ -209,7 +209,7 @@ const ResultListPage = () => {
             >
               <Image src="/filter.png" alt="" width={14} height={14} />
             </button>
-            <FormModal table="result" type="create" />
+            <FormModal table="longResult" type="create" />
           </div>
         </div>
       </div>
@@ -272,10 +272,10 @@ const ResultListPage = () => {
       )}
 
       <Table columns={columns} renderRow={(item) => (
-        <tr key={item.student_id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
+        <tr key={item.matric_number} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
           <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
           <td>{item.first_name} {item.last_name}</td>
-          <td className="hidden md:table-cell">{item.student_id}</td>
+          <td className="hidden md:table-cell">{item.matric_number}</td>
           <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
           <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
           <td>

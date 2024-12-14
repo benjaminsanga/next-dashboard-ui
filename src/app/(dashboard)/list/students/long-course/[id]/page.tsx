@@ -3,7 +3,7 @@ import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalender";
 import Performance from "@/components/Performance";
 import { supabase } from "@/lib/supabase";
-import { ShortCourseStudent } from "@/types/admin";
+import { LongCourseStudent } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -13,12 +13,12 @@ import { LoaderIcon } from "react-hot-toast";
 const SingleStudentPage = () => {
   const {id} = useParams()
 
-  const [student, setStudent] = useState<ShortCourseStudent>()
+  const [student, setStudent] = useState<LongCourseStudent>()
 
   useEffect(() => {
-    const fetchStudentById = async (id: string): Promise<ShortCourseStudent | null> => {
+    const fetchStudentById = async (id: string): Promise<LongCourseStudent | null> => {
       const { data, error } = await supabase
-        .from('short_course_students')
+        .from('long_course_students')
         .select('*')
         .eq('id', id)
         .single();
@@ -27,12 +27,12 @@ const SingleStudentPage = () => {
         console.error("Error fetching student:", error.message);
         return null;
       }
-      return data as ShortCourseStudent;
+      return data as LongCourseStudent;
     };
 
     const loadStudent = async () => {
         const result = await fetchStudentById(id as string);
-        setStudent(result as ShortCourseStudent);
+        setStudent(result as LongCourseStudent);
     };
 
     loadStudent();
@@ -117,7 +117,7 @@ const SingleStudentPage = () => {
         {/* BOTTOM */}
         <div className="mt-4 bg-white rounded-md p-4 m-h-[600px] text-sm text-gray-500">
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
-            <span><strong>Personnel Id Number</strong>: {student?.personnel_id_number}</span>
+            <span><strong>Personnel ID Number</strong>: {student?.personnel_id_number}</span>
           </div>
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
             <span><strong>Rank</strong>: {student?.rank}</span>
@@ -126,7 +126,10 @@ const SingleStudentPage = () => {
             <span><strong>Genotype</strong>: {student?.genotype}</span>
           </div>
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
-            <span><strong>Student ID</strong>: {student?.student_id}</span>
+            <span><strong>JAMB Registration Number</strong>: {student?.jamb_reg_number}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Matric Number</strong>: {student?.matric_number}</span>
           </div>
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
             <span><strong>Blood Group</strong>: {student?.blood_group}</span>

@@ -30,8 +30,8 @@ const forms: {
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   shortCourseStudent: (type, data) => <ShortCourseStudentForm type={type} data={data} />,
-  longCoursestudent: (type, data) => <LongCourseStudentForm type={type} data={data} />,
-  result: (type, data) => <ShortCourseResultForm type={type} data={data} />,
+  longCourseStudent: (type, data) => <LongCourseStudentForm type={type} data={data} />,
+  shortResult: (type, data) => <ShortCourseResultForm type={type} data={data} />,
   longResult: (type, data) => <LongCourseResultForm type={type} data={data} />,
 };
 
@@ -51,7 +51,7 @@ const FormModal = ({
     | "lesson"
     | "exam"
     | "assignment"
-    | "result"
+    | "shortResult"
     | "attendance"
     | "event"
     | "announcement"

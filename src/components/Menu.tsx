@@ -69,7 +69,7 @@ const menuItems = [
       {
         icon: "/result.png",
         label: "Short Course Results",
-        href: "/list/results",
+        href: "/list/results/short",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {

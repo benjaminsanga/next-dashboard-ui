@@ -230,7 +230,7 @@ const ResultListPage = () => {
               </button> */}
               
               {/* Create Modal */}
-              <FormModal table="result" type="create" />
+              <FormModal table="shortResult" type="create" />
 
               {/* Filter Modal */}
               {filterModalOpen && (

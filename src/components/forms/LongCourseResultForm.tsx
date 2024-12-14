@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 
 const schema = z.object({
-  student_id: z.string().min(1, { message: "Student ID is required!" }),
+  matric_number: z.string().min(1, { message: "Matric Number is required!" }),
   first_name: z.string().min(1, { message: "First name is required!" }),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
@@ -63,7 +63,7 @@ const LongCourseResultForm = ({
     name: "courses",
   });
 
-  const studentId = watch("student_id");
+  const studentId = watch("matric_number");
 
   const calculateGrade = (score: number): string => {
     if (score >= 80) return "A";
@@ -91,9 +91,9 @@ const LongCourseResultForm = ({
 
     try {
       const { data, error } = await supabase
-        .from("students")
+        .from("long_course_students")
         .select("*")
-        .eq("student_id", studentId)
+        .eq("matric_number", studentId)
         .single();
 
       if (error) throw new Error("Student not found");
@@ -118,7 +118,7 @@ const LongCourseResultForm = ({
 
       // Prepare data for insertion
       const coursesData = formData.courses.map((course) => ({
-        student_id: formData.student_id,
+        matric_number: formData.matric_number,
         first_name: formData.first_name,
         last_name: formData.last_name,
         department: formData.department,
@@ -148,7 +148,7 @@ const LongCourseResultForm = ({
       <h1 className="text-xl font-semibold">{type === "create" ? "Create Result" : "Update Result"}</h1>
       <div className="flex flex-wrap gap-4">
         <div className="w-full">
-          <InputField label="Student ID" name="student_id" register={register} error={errors.student_id} />
+          <InputField label="Matric Number" name="matric_number" register={register} error={errors.matric_number} />
           <button
             type="button"
             onClick={handleGetStudentInfo}
