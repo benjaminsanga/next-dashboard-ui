@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const Menu = () => {
-  const [userRole, setUserRole] = useState<string>("default");
+  const [userRole, setUserRole] = useState<string>("admin");
 
   const baseMenuItems = [
     {
@@ -31,7 +31,7 @@ const Menu = () => {
         {
           icon: "/logout.png",
           label: "Logout",
-          href: "/logout",
+          href: "/auth",
           visible: ["results_admin", "registration_admin", "admin"],
         },
       ],
@@ -53,7 +53,33 @@ const Menu = () => {
         visible: ["results_admin", "admin"],
       },
     ],
-    default: [
+    registration_admin: [
+      {
+        icon: "/student.png",
+        label: "Short Course Students",
+        href: "/list/students/short-course",
+        visible: ["registration_admin", "admin"],
+      },
+      {
+        icon: "/student.png",
+        label: "Long Course Students",
+        href: "/list/students/long-course",
+        visible: ["registration_admin", "admin"],
+      },
+    ],
+    admin: [
+      {
+        icon: "/result.png",
+        label: "Short Course Results",
+        href: "/list/results/short",
+        visible: ["results_admin", "admin"],
+      },
+      {
+        icon: "/result.png",
+        label: "Long Course Results",
+        href: "/list/results/long",
+        visible: ["results_admin", "admin"],
+      },
       {
         icon: "/student.png",
         label: "Short Course Students",
@@ -72,14 +98,14 @@ const Menu = () => {
   useEffect(() => {
     const fetchUserRole = async () => {
       const { data } = await supabase.auth.getUser();
-      setUserRole(data?.user?.user_metadata?.role || "default");
+      setUserRole(data?.user?.user_metadata?.role || "admin");
     };
 
     fetchUserRole();
   }, []);
 
   const additionalMenuItems =
-    roleSpecificMenuItems[userRole as keyof typeof roleSpecificMenuItems] || roleSpecificMenuItems.default;
+    roleSpecificMenuItems[userRole as keyof typeof roleSpecificMenuItems] || roleSpecificMenuItems.admin;
 
   return (
     <div className="mt-4 text-sm">
