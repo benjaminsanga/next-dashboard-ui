@@ -25,7 +25,8 @@ export interface ShortCourseStudent {
   department:                    string;
   course:                        string;
   dob:                           Date;
-  // course_length:                 string;
+  year:                          string;
+  quarter:                       string;
   religion:                      string;
   blood_group:                   string;
   genotype:                      string;

@@ -2,8 +2,7 @@
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-// import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { courseOptions, departmentOptions, role } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { ShortCourseStudent } from "@/types/admin";
 import Image from "next/image";
@@ -42,29 +41,67 @@ const columns = [
 ];
 
 const ShortCourseStudentListPage = () => {
-  const [students, setStudents] = useState<ShortCourseStudent[]>([])
+  const [students, setStudents] = useState<ShortCourseStudent[]>([]);
+  const [filters, setFilters] = useState({
+    year: "",
+    quarter: "",
+    department: "",
+    course: "",
+  });
+  const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
+
+  const filteredDepartments = departmentOptions["short"];
 
   useEffect(() => {
     const fetchAllStudents = async (): Promise<ShortCourseStudent[]> => {
-        const { data, error } = await supabase
-            .from('short_course_students')
-            .select('*');
-        
-        if (error) {
-            console.error("Error fetching students:", error.message);
-            return [];
-        }
-        return data as ShortCourseStudent[];
+      const { data, error } = await supabase
+        .from("short_course_students")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching students:", error.message);
+        return [];
+      }
+      return data as ShortCourseStudent[];
     };
 
     const loadStudents = async () => {
-        const students = await fetchAllStudents();
-        setStudents(students);
+      const students = await fetchAllStudents();
+      setStudents(students);
     };
 
     loadStudents();
   }, []);
+
+  const applyFilters = () => {
+    return students.filter((student) => {
+      const matchesYear = filters.year
+        ? student.year?.toString().toLowerCase().includes(filters.year.toLowerCase())
+        : true;
+      const matchesQuarter = filters.quarter
+        ? student.quarter?.toLowerCase().includes(filters.quarter.toLowerCase())
+        : true;
+      const matchesDepartment = filters.department
+        ? student.department?.toLowerCase().includes(filters.department.toLowerCase())
+        : true;
+      const matchesCourse = filters.course
+        ? student.course?.toLowerCase().includes(filters.course.toLowerCase())
+        : true;
   
+      return matchesYear && matchesQuarter && matchesDepartment && matchesCourse;
+    });
+  };
+  
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (name === "department") {
+      setFilteredCourses(courseOptions[value] || []);
+    }
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
+
+  const filteredStudents = applyFilters();
+
   const renderRow = (item: ShortCourseStudent) => (
     <tr
       key={item.id}
@@ -95,12 +132,9 @@ const ShortCourseStudentListPage = () => {
             </button>
           </Link>
           {role === "admin" && (
-            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
-            //   <Image src="/delete.png" alt="" width={16} height={16} />
-            // </button>
             <>
-            <FormModal table="shortCourseStudent" type="update" data={item} />
-            <FormModal table="shortCourseStudent" type="delete" />
+              <FormModal table="shortCourseStudent" type="update" data={item} />
+              <FormModal table="shortCourseStudent" type="delete" />
             </>
           )}
         </div>
@@ -111,28 +145,68 @@ const ShortCourseStudentListPage = () => {
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-5">
         <h1 className="hidden md:block text-lg font-semibold">All Short Course Students</h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          {/* <TableSearch /> */}
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/filter.png" alt="" width={14} height={14} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/sort.png" alt="" width={14} height={14} />
-            </button>
-            {role === "admin" && (
-              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              //   <Image src="/plus.png" alt="" width={14} height={14} />
-              // </button>
-              <FormModal table="shortCourseStudent" type="create"/>
-            )}
+          <div className="flex items-center gap-4">
+            <input
+              type="text"
+              name="year"
+              placeholder="Year"
+              value={filters.year}
+              onChange={handleFilterChange}
+              className="border p-2 rounded w-[100px] text-sm"
+            />
+            <select
+              onChange={handleFilterChange}
+              className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
+              name="quarter"
+            >
+              <option value="">Quarter</option>
+              <option value="First">First</option>
+              <option value="Second">Second</option>
+              <option value="Third">Third</option>
+              <option value="Fourth">Fourth</option>
+            </select>
+            <select
+              onChange={handleFilterChange}
+              className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
+              name="department"
+            >
+              <option value="">Department</option>
+              {filteredDepartments?.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+            <select
+              name="course"
+              className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
+              onChange={handleFilterChange}
+            >
+              <option value="">Course</option>
+              {filteredCourses?.map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+            <button 
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+              onClick={() => setFilters({
+                year: "",
+                quarter: "",
+                department: "",
+                course: "",
+              })}
+            >Clear Filters</button>
           </div>
         </div>
       </div>
+      <hr/>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={students} />
+      <Table columns={columns} renderRow={renderRow} data={filteredStudents} />
       {/* PAGINATION */}
       <Pagination />
     </div>

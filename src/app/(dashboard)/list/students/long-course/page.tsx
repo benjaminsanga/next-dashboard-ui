@@ -3,7 +3,7 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 // import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { courseOptions, departmentOptions, role, studentsData } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import { LongCourseStudent } from "@/types/admin";
 import Image from "next/image";
@@ -43,6 +43,15 @@ const columns = [
 
 const LongCourseStudentListPage = () => {
   const [students, setStudents] = useState<LongCourseStudent[]>([])
+  const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
+  const [filters, setFilters] = useState({
+    year: "",
+    quarter: "",
+    department: "",
+    course: "",
+  });
+
+  const filteredDepartments = departmentOptions["long"];
 
   useEffect(() => {
     const fetchAllStudents = async (): Promise<LongCourseStudent[]> => {
@@ -64,6 +73,29 @@ const LongCourseStudentListPage = () => {
 
     loadStudents();
   }, []);
+
+  const applyFilters = () => {
+    return students.filter((student) => {
+      const matchesDepartment = filters.department
+        ? student.department?.toLowerCase().includes(filters.department.toLowerCase())
+        : true;
+      const matchesCourse = filters.course
+        ? student.course?.toLowerCase().includes(filters.course.toLowerCase())
+        : true;
+  
+      return matchesDepartment && matchesCourse;
+    });
+  };
+
+  const filteredStudents = applyFilters();
+    
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (name === "department") {
+      setFilteredCourses(courseOptions[value] || []);
+    }
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
   
   const renderRow = (item: LongCourseStudent) => (
     <tr
@@ -111,28 +143,49 @@ const LongCourseStudentListPage = () => {
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between w-full mb-5">
         <h1 className="hidden md:block text-lg font-semibold">All Long Course Students</h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-          {/* <TableSearch /> */}
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/filter.png" alt="" width={14} height={14} />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <Image src="/sort.png" alt="" width={14} height={14} />
-            </button>
-            {role === "admin" && (
-              // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              //   <Image src="/plus.png" alt="" width={14} height={14} />
-              // </button>
-              <FormModal table="longCoursestudent" type="create"/>
-            )}
+          <div className="flex items-center gap-4">
+            <select
+              onChange={handleFilterChange}
+              className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
+              name="department"
+            >
+              <option value="">Department</option>
+              {filteredDepartments?.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+            <select
+              name="course"
+              className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
+              onChange={handleFilterChange}
+            >
+              <option value="">Course</option>
+              {filteredCourses?.map((course) => (
+                <option key={course} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+            <button 
+              className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+              onClick={() => setFilters({
+                year: "",
+                quarter: "",
+                department: "",
+                course: "",
+              })}
+            >Clear Filters</button>
           </div>
         </div>
       </div>
+      <hr/>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={students} />
+      <Table columns={columns} renderRow={renderRow} data={filteredStudents} />
       {students.length === 0 && <p className="text-center text-gray-500 text-sm py-8">No records, yet</p>}
       {/* PAGINATION */}
       <Pagination />

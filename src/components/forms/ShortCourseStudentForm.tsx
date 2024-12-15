@@ -25,6 +25,8 @@ const schema = z.object({
   student_id: z.string().min(1, { message: "Student ID is required!" }),
   personnel_id_number: z.string().min(1, { message: "Personnel ID Number is required!" }),
   rank: z.string().min(1, { message: "Rank is required!" }),
+  year: z.string().min(1, { message: "Year is required!" }),
+  quarter: z.string().min(1, { message: "Quarter is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
   course: z.string().min(1, { message: "Course is required!" }),
   dob: z.preprocess((arg) => (arg ? new Date(arg as string) : undefined), z.date({ message: "DOB is required!" })),
@@ -166,6 +168,24 @@ const ShortCourseStudentForm = ({
         <InputField label="Last Name" name="last_name" defaultValue={data?.last_name} register={register} error={errors.last_name} />
         <InputField label="Personnel ID Number" name="personnel_id_number" defaultValue={data?.personnel_id_number} register={register} error={errors.personnel_id_number} />
         <InputField label="Rank" name="rank" defaultValue={data?.rank} register={register} error={errors.rank} />
+        <InputField label="Year" name="year" type="text" defaultValue={data?.year} register={register} error={errors.year} />
+        {/* <InputField label="Quarter" name="quarter" defaultValue={data?.quarter} register={register} error={errors.quarter} /> */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Quarter</label>
+          <select
+            {...register("quarter")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+          >
+            <option value="">Select Quarter</option>
+            <option value="First">First</option>
+            <option value="Second">Second</option>
+            <option value="Third">Third</option>
+            <option value="Fourth">Fourth</option>
+          </select>
+          {errors.quarter?.message && (
+            <p className="text-xs text-red-400">{errors.quarter.message}</p>
+          )}
+        </div>
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Medical Status</label>
           <select
