@@ -9,7 +9,6 @@ import { Result } from "@/types/admin";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { LoaderIcon } from "react-hot-toast";
 
 const columns = [
   { header: "Subjects Count", accessor: "name" },
@@ -34,7 +33,7 @@ const ResultListPage = () => {
   const [department, setDepartment] = useState("");
   const [academicSession, setAcademicSession] = useState("")
   const [semester, setSemester] = useState("")
-  const [totalGrade, setTotalGrade] = useState("");
+  const [isCgpa, setIsCgpa] = useState(false)
   const [grades, setGrades] = useState<{ title: string; grade: string; score: string; credit_unit: number }[]>([]);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -43,26 +42,35 @@ const ResultListPage = () => {
     year: "",
   });
 
-  const calculateGrade = (score: number): string => {
-    if (score >= 80) return "A";
-    if (score >= 60) return "B";
-    if (score >= 50) return "C";
-    if (score >= 40) return "D";
-    return "F";
-  };
-
   const calculateGPA = (courses: any[]): number => {
     let totalGradePoints = 0;
     let totalCreditUnits = 0;
-    
-    courses.forEach(({ grade, credit_unit }: { grade: string; credit_unit: number}) => {
-      const gradePoint = grade === "A" ? 4 : grade === "B" ? 3 : grade === "C" ? 2 : grade === "D" ? 1 : 0;
+
+    courses.forEach(({ grade, credit_unit }: { grade: string; credit_unit: number }) => {
+      const gradePoint =
+        grade === "A" ? 4 :
+        grade === "B" ? 3 :
+        grade === "C" ? 2 :
+        grade === "D" ? 1 : 0;
       totalGradePoints += gradePoint * credit_unit;
       totalCreditUnits += credit_unit;
     });
 
-    return totalCreditUnits > 0 ? Number(parseFloat(`${(totalGradePoints / totalCreditUnits)}`).toFixed(2)) : 0;
+    return totalCreditUnits > 0
+      ? Number((totalGradePoints / totalCreditUnits).toFixed(2))
+      : 0;
   };
+
+  useEffect(() => {
+    const academicSessions = Array.from(
+      new Set(
+        results
+          .map(result => result.academic_session)
+          .filter((session): session is string => session !== undefined)
+      )
+    );
+    setIsCgpa(academicSessions.length > 1);
+  }, [results]);
 
   useEffect(() => {
     const processedStudents = Object.values(
@@ -290,7 +298,6 @@ const ResultListPage = () => {
                 setAcademicSession(item.academic_session)
                 setSemester(item.semester)
                 setStudentId(item.student_id)
-                setTotalGrade(calculateGrade(item.total_score / item.courses_count))
                 setGrades(results.filter((i) => i.student_id === item.student_id).map(item => ({
                   grade: item.grade,
                   score: item.score,
@@ -342,6 +349,7 @@ const ResultListPage = () => {
                       year={null}
                       quarter={null}
                       gpa={calculateGPA(grades)}
+                      isCgpa={isCgpa}
                     />
                   }
                   fileName="result-sheet.pdf"
@@ -362,6 +370,7 @@ const ResultListPage = () => {
                   year={null}
                   quarter={null}
                   gpa={calculateGPA(grades)}
+                  isCgpa={isCgpa}
                 />
               </div>
             </div>

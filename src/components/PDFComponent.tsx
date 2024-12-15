@@ -102,8 +102,9 @@ const CertificatePDF: React.FC<{
   quarter?: string | null;
   academic_session?: string | null;
   semester?: string | null;
-  gpa?: string | number;
-}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester, gpa }) => (
+  gpa?: number | null;
+  isCgpa?: boolean;
+}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester, gpa, isCgpa }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.border}>
@@ -142,7 +143,7 @@ const CertificatePDF: React.FC<{
           <Text style={{ fontWeight: "bold" }}>Total Grade:</Text> {totalGrade}
         </Text>}
         {!!gpa && <Text style={styles.info}>
-          <Text style={{ fontWeight: "bold" }}>GPA:</Text> {gpa}
+          <Text style={{ fontWeight: "bold" }}>{isCgpa ? 'CGPA' : 'GPA'}:</Text> {gpa}
         </Text>}
         <View style={{ padding: "10px 0" }}></View>
         <View style={styles.tableRow}>
