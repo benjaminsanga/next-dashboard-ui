@@ -91,7 +91,10 @@ const ProfilePage = () => {
 
   return (
     <div className="max-w-md ms-8 mt-10">
-      <h1 className="text-2xl font-bold mb-4">Change Password</h1>
+      <div className="flex justify-between w-full items-center">
+        <h1 className="text-2xl font-bold mb-4">Change Password</h1>
+        <button onClick={() => router.push(`/admin/create`)} className="text-sm rounded-sm px-2 py-1 border border-gray-500 text-gray-500">Create Admin</button>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full">
         <div className="flex flex-col flex-wrap gap-4">
           <div className="flex flex-col">
