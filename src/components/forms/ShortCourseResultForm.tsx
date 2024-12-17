@@ -109,7 +109,7 @@ const ShortCourseResultForm = ({
   
     try {
       // Check if the student exists
-      
+      const { personnel_number } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
   
       // Prepare the courses data
       const coursesData = data.courses.map((course) => ({
@@ -121,6 +121,7 @@ const ShortCourseResultForm = ({
         last_name: getValues("last_name"),
         year: getValues("year"),
         quarter: getValues("quarter"),
+        created_by: personnel_number,
       }));
   
       // Insert courses into the student_results table

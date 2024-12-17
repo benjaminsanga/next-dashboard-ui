@@ -40,7 +40,7 @@ const ProfilePage = () => {
   
     setLoading(true);
     toast.loading("Updating password...", { id: "update-password" });
-    const { id } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '')
+    const { id } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
   
     try {
       // Fetch the currently logged-in user

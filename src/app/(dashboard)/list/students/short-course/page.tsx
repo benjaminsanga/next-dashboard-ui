@@ -35,6 +35,11 @@ const columns = [
     className: "hidden lg:table-cell",
   },
   {
+    header: "Added By",
+    accessor: "added_by",
+    className: "hidden lg:table-cell",
+  },
+  {
     header: "Actions",
     accessor: "action",
   },
@@ -124,6 +129,7 @@ const ShortCourseStudentListPage = () => {
       <td className="hidden md:table-cell capitalize">{item.sex}</td>
       <td className="hidden md:table-cell">{item.phone}</td>
       <td className="hidden md:table-cell">{item.address}</td>
+      <td className="hidden md:table-cell">{item.created_by}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/students/short-course/${item.id}`}>

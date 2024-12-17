@@ -111,6 +111,7 @@ const LongCourseResultForm = ({
 
   const onSubmit = async (formData: Inputs) => {
     toast.loading("Submitting data...", { id: "submission" });
+    const { personnel_number } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
 
     try {
       // Calculate GPA
@@ -129,6 +130,7 @@ const LongCourseResultForm = ({
         credit_unit: course.credit_unit,
         score: course.score,
         grade: calculateGrade(course.score),
+        created_by: personnel_number,
       }));
 
       // Insert into Supabase

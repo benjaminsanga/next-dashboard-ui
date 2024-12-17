@@ -40,6 +40,7 @@ export interface ShortCourseStudent {
   close_associate_outside_lagos: CloseAssociateLagos;
   created_at:                    Date;
   updated_at:                    Date;
+  created_by:                    string;
 }
 
 export interface LongCourseStudent {
@@ -71,6 +72,7 @@ export interface LongCourseStudent {
   close_associate_outside_lagos: CloseAssociateLagos;
   created_at:                    Date;
   updated_at:                    Date;
+  created_by:                    string;
 }
 
 export interface CloseAssociateLagos {
@@ -119,6 +121,7 @@ export interface Result {
   photo_url:    string;
   first_name:   string;
   last_name:    string;
+  created_by:   string;
 }
 
 

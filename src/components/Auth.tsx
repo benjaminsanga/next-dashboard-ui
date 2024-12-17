@@ -20,7 +20,7 @@ export default function Auth() {
       // Fetch the admin record by personnel number
       const { data, error } = await supabase
         .from("admins")
-        .select("id, password, role")
+        .select("id, password, role, personnel_number")
         .eq("personnel_number", personnelNumber)
         .single();
 

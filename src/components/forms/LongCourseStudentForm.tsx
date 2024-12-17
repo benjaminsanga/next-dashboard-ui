@@ -51,6 +51,7 @@ const schema = z.object({
     phone: z.string().min(1, { message: "Phone number is required!" }),
     address: z.string().min(1, { message: "Address is required!" }),
   }),
+  created_by: z.string(),
 });
 
 type Inputs = z.infer<typeof schema>;
@@ -87,11 +88,14 @@ const LongCourseStudentForm = ({
   };
 
   const insertStudent = async (student: Inputs): Promise<Inputs | null> => {
+    const { personnel_number } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
     const { error: signupError } = await supabase.auth.signUp({ email: student.email, password: student.password });
     if (signupError) {
       toast.error(signupError.message);
       return null;
     } else toast.success("Sign-up successful...");
+
+    student.created_by = personnel_number;
 
     const { data, error } = await supabase
       .from('long_course_students')

@@ -36,6 +36,11 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
+    header: "Added By",
+    accessor: "added_by",
+    className: "hidden md:table-cell",
+  },
+  {
     header: "Actions",
     accessor: "action",
   },
@@ -171,6 +176,7 @@ const ResultListPage = () => {
       <td className="hidden md:table-cell">{item.student__id}</td>
       <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
       <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
+      <td className="hidden md:table-cell">{item.created_by}</td>
       <td>
         <div className="flex items-center gap-2">
           <button

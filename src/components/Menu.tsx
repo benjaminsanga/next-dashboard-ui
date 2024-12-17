@@ -99,7 +99,7 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    const { role } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '')
+    const { role } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
     setUserRole(role || "");
     if (!role) {
       toast.error("Unauthenticated");
