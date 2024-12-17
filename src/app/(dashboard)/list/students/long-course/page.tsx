@@ -137,8 +137,8 @@ const LongCourseStudentListPage = () => {
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
             <>
-            <FormModal table="longCoursestudent" type="update" data={item} />
-            <FormModal table="longCoursestudent" type="delete" />
+            <FormModal table="longCourseStudent" type="update" data={item} />
+            <FormModal table="longCourseStudent" type="delete" />
             </>
           )}
         </div>
@@ -166,7 +166,7 @@ const LongCourseStudentListPage = () => {
               ))}
             </select>
             <select
-              name="course"
+              name="course" 
               className="w-[150px] p-2 border border-gray-300 rounded-md text-sm"
               onChange={handleFilterChange}
             >
@@ -186,6 +186,7 @@ const LongCourseStudentListPage = () => {
                 course: "",
               })}
             >Clear Filters</button>
+            <FormModal table="longCourseStudent" type="create" />
           </div>
         </div>
       </div>

@@ -156,6 +156,7 @@ const ResultListPage = () => {
         acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
         acc[studentId].semester = !!item.semester ? item.semester : '';
         acc[studentId].course = !!item.course ? item.course : '';
+        acc[studentId].created_by = !!item.created_by && item.created_by;
         acc[studentId].total_score += item.score;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;

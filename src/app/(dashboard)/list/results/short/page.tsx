@@ -98,6 +98,7 @@ const ResultListPage = () => {
 
         acc[studentId].year = !!item.year ? item.year : acc[studentId].year;
         acc[studentId].quarter = !!item.quarter ? item.quarter : acc[studentId].quarter;
+        acc[studentId].created_by = !!item.created_by && item.created_by;
         acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
         return acc;
       }, {} as Record<string, any>)

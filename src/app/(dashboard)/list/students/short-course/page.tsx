@@ -207,6 +207,7 @@ const ShortCourseStudentListPage = () => {
                 course: "",
               })}
             >Clear Filters</button>
+            <FormModal table="shortCourseStudent" type="create" />
           </div>
         </div>
       </div>

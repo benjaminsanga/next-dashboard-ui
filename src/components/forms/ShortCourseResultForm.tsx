@@ -83,7 +83,7 @@ const ShortCourseResultForm = ({
     toast.loading("Fetching student data", { id: "54321" });
     try {
       const { data, error } = await supabase
-        .from("students")
+        .from("short_course_students")
         .select("*")
         .eq("student_id", studentId)
         .single();

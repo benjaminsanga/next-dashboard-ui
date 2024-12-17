@@ -44,7 +44,7 @@ const FormModal = ({
   table:
     | "teacher"
     | "shortCourseStudent"
-    | "longCoursestudent"
+    | "longCourseStudent"
     | "parent"
     | "subject"
     | "class"
