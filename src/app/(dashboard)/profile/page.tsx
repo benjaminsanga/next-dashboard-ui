@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import bcrypt from "bcryptjs"; 
 
 const schema = z
   .object({
@@ -36,40 +37,47 @@ const ProfilePage = () => {
 
   const onSubmit = async (data: Inputs) => {
     const { current_password, new_password } = data;
-
+  
     setLoading(true);
     toast.loading("Updating password...", { id: "update-password" });
-
+    const { id } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '')
+  
     try {
+      // Fetch the currently logged-in user
+      const { data: userData, error: userError } = await supabase
+        .from("admins")
+        .select("id, personnel_number, password")
+        .eq("id", id)
+        .single();
+  
+      if (userError || !userData) {
+        throw new Error("User not found or not logged in.");
+      }
+  
       // Validate current password
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData?.user?.email) {
-        throw new Error("User not found or not logged in");
+      const isMatch = await bcrypt.compare(current_password, userData.password);
+      if (!isMatch) {
+        throw new Error("Current password is incorrect.");
       }
-
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: userData.user.email,
-        password: current_password,
-      });
-
-      if (signInError) {
-        throw new Error("Failed to authenticate with current password");
-      }
-
-      // Update password
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: new_password,
-      });
-
+  
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(new_password, 10);
+  
+      // Update the password in the database
+      const { error: updateError } = await supabase
+        .from("admins")
+        .update({ password: hashedPassword })
+        .eq("id", userData.id);
+  
       if (updateError) {
-        throw new Error(updateError.message);
+        throw new Error("Failed to update password.");
       }
-
+  
       toast.success("Password updated successfully. Logging out...", { id: "update-password" });
-
-      // Logout user
-      await supabase.auth.signOut();
-
+  
+      // Logout user (if applicable)
+      localStorage.clear()
+  
       // Redirect to login page
       router.push("/auth");
     } catch (err: any) {
@@ -79,6 +87,7 @@ const ProfilePage = () => {
       reset();
     }
   };
+  
 
   return (
     <div className="max-w-md ms-8 mt-10">

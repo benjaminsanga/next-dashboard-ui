@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import Image from "next/image";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Menu = () => {
   const [userRole, setUserRole] = useState<string>("admin");
+  const router = useRouter()
 
   const baseMenuItems = [
     {
@@ -96,13 +99,13 @@ const Menu = () => {
   };
 
   useEffect(() => {
-    const fetchUserRole = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUserRole(data?.user?.user_metadata?.role || "admin");
-    };
-
-    fetchUserRole();
-  }, []);
+    const { role } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '')
+    setUserRole(role || "");
+    if (!role) {
+      toast.error("Unauthenticated");
+      router.push("/auth")
+    }
+  }, [router]);
 
   const additionalMenuItems =
     roleSpecificMenuItems[userRole as keyof typeof roleSpecificMenuItems] || roleSpecificMenuItems.admin;
