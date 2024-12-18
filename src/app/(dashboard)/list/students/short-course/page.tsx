@@ -214,6 +214,7 @@ const ShortCourseStudentListPage = () => {
       <hr/>
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={filteredStudents} />
+      {students.length === 0 && <p className="text-center text-gray-500 text-sm py-8">No records, yet</p>}
       {/* PAGINATION */}
       <Pagination />
     </div>

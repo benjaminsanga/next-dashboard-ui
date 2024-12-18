@@ -316,6 +316,7 @@ const ResultListPage = () => {
         </td>
         </tr>
       )} data={filteredStudents} />
+      {results.length === 0 && <p className="text-center text-gray-500 text-sm py-8">No records, yet</p>}
 
       <Pagination />
       <button
