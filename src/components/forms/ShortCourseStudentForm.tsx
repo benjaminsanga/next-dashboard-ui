@@ -82,7 +82,7 @@ const ShortCourseStudentForm = ({
   // const courseLength = watch("course_length") as "long" | "short";
   const department = watch("department") as string;
 
-  const filteredDepartments = departmentOptions["long"];
+  const filteredDepartments = departmentOptions["short"];
 
   const handleDepartmentChange = (value: string) => {
     setFilteredCourses(courseOptions[value] || []);
