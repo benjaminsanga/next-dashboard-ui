@@ -211,165 +211,159 @@ const ResultListPage = () => {
   );
 
   return (
-    filteredStudents.length === 0 ? (
-      <div className="w-full h-20 flex justify-center items-center">
-        <LoaderIcon />
-      </div>
-    ) : (
-      <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
-        {/* TOP */}
-        <div className="flex items-center justify-between">
-          <h1 className="hidden md:block text-lg font-semibold">All Short Course Results</h1>
-          <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-            <TableSearch onChange={handleSearchChange} />
-            <div className="flex items-center gap-4 self-end">
-              {/* Filter Button */}
-              <button
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
-                onClick={() => setFilterModalOpen(true)}
-              >
-                <Image src="/filter.png" alt="" width={14} height={14} />
-              </button>
-              
-              {/* Sort Button */}
-              {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-                <Image src="/sort.png" alt="" width={14} height={14} />
-              </button> */}
-              
-              {/* Create Modal */}
-              <FormModal table="shortResult" type="create" />
+    <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
+      {/* TOP */}
+      <div className="flex items-center justify-between">
+        <h1 className="hidden md:block text-lg font-semibold">All Short Course Results</h1>
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+          <TableSearch onChange={handleSearchChange} />
+          <div className="flex items-center gap-4 self-end">
+            {/* Filter Button */}
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow"
+              onClick={() => setFilterModalOpen(true)}
+            >
+              <Image src="/filter.png" alt="" width={14} height={14} />
+            </button>
+            
+            {/* Sort Button */}
+            {/* <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+              <Image src="/sort.png" alt="" width={14} height={14} />
+            </button> */}
+            
+            {/* Create Modal */}
+            <FormModal table="shortResult" type="create" />
 
-              {/* Filter Modal */}
-              {filterModalOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                    <h2 className="text-lg font-semibold mb-4">Apply Filters</h2>
-                    
-                    {/* Filter Fields */}
-                    <div className="flex flex-col gap-4">
-                      <div>
-                        <label className="block text-sm font-medium">Student ID</label>
-                        <input
-                          type="text"
-                          className="w-full p-2 border border-gray-300 rounded"
-                          value={filters.studentId}
-                          onChange={(e) => setFilters({ ...filters, studentId: e.target.value })}
-                          placeholder="Enter Student ID"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">Department</label>
-                        <input
-                          type="text"
-                          className="w-full p-2 border border-gray-300 rounded"
-                          value={filters.department}
-                          onChange={(e) => setFilters({ ...filters, department: e.target.value })}
-                          placeholder="Enter Department"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium">Year</label>
-                        <input
-                          type="number"
-                          className="w-full p-2 border border-gray-300 rounded"
-                          value={filters.year}
-                          onChange={(e) => setFilters({ ...filters, year: e.target.value })}
-                          placeholder="Enter Year"
-                        />
-                      </div>
+            {/* Filter Modal */}
+            {filterModalOpen && (
+              <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                  <h2 className="text-lg font-semibold mb-4">Apply Filters</h2>
+                  
+                  {/* Filter Fields */}
+                  <div className="flex flex-col gap-4">
+                    <div>
+                      <label className="block text-sm font-medium">Student ID</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        value={filters.studentId}
+                        onChange={(e) => setFilters({ ...filters, studentId: e.target.value })}
+                        placeholder="Enter Student ID"
+                      />
                     </div>
-
-                    {/* Modal Actions */}
-                    <div className="flex items-center justify-end mt-4 gap-4">
-                      <button
-                        className="px-4 py-2 text-sm bg-gray-300 rounded"
-                        onClick={() => setFilterModalOpen(false)}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="px-4 py-2 text-sm bg-lamaYellow rounded"
-                        onClick={() => {
-                          applyFilters();
-                          setFilterModalOpen(false);
-                        }}
-                      >
-                        Apply
-                      </button>
+                    <div>
+                      <label className="block text-sm font-medium">Department</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        value={filters.department}
+                        onChange={(e) => setFilters({ ...filters, department: e.target.value })}
+                        placeholder="Enter Department"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium">Year</label>
+                      <input
+                        type="number"
+                        className="w-full p-2 border border-gray-300 rounded"
+                        value={filters.year}
+                        onChange={(e) => setFilters({ ...filters, year: e.target.value })}
+                        placeholder="Enter Year"
+                      />
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
 
+                  {/* Modal Actions */}
+                  <div className="flex items-center justify-end mt-4 gap-4">
+                    <button
+                      className="px-4 py-2 text-sm bg-gray-300 rounded"
+                      onClick={() => setFilterModalOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-4 py-2 text-sm bg-lamaYellow rounded"
+                      onClick={() => {
+                        applyFilters();
+                        setFilterModalOpen(false);
+                      }}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
+      </div>
+      {/* LIST */}
+      <Table columns={columns} renderRow={renderRow} data={filteredStudents} />
+      {/* PAGINATION */}
+      <Pagination />
+      <button
+        className="px-3 py-1 text-sm bg-blue-500 text-white rounded"
+        onClick={() => {
+          setFilters({ studentId: "", department: "", year: "" });
+          setUniqueStudents(uniqueStudents);
+        }}
+      >
+        Clear Filters
+      </button>
+      {view && (
+        <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
+            <div
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={() => {
+                setGrades([]);
+                setView(false);
+              }}
+            >
+              <Image src="/close.png" alt="" width={14} height={14} />
+            </div>
+            <div>
+              <PDFDownloadLink
+                document={
+                  <PDFDocument
+                    results={grades}
+                    name={name}
+                    date={date}
+                    course={course}
+                    department={department}
+                    studentId={studentId}
+                    totalGrade={totalGrade}
+                    year={year}
+                    quarter={quarter}
+                    academic_session={null}
+                    semester={null}
+                  />
+                }
+                fileName="result-sheet.pdf"
+                className="text-xs mt-5"
+              >
+                Download Result Sheet
+              </PDFDownloadLink>
+              <PDFDocument
+                results={grades}
+                name={name}
+                date={date}
+                course={course}
+                department={department}
+                studentId={studentId}
+                totalGrade={totalGrade}
+                year={year}
+                quarter={quarter}
+                academic_session={null}
+                semester={null}
+              />
+            </div>
           </div>
         </div>
-        {/* LIST */}
-        <Table columns={columns} renderRow={renderRow} data={filteredStudents} />
-        {/* PAGINATION */}
-        <Pagination />
-        <button
-          className="px-3 py-1 text-sm bg-blue-500 text-white rounded"
-          onClick={() => {
-            setFilters({ studentId: "", department: "", year: "" });
-            setUniqueStudents(uniqueStudents);
-          }}
-        >
-          Clear Filters
-        </button>
-        {view && (
-          <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
-            <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
-              <div
-                className="absolute top-4 right-4 cursor-pointer"
-                onClick={() => {
-                  setGrades([]);
-                  setView(false);
-                }}
-              >
-                <Image src="/close.png" alt="" width={14} height={14} />
-              </div>
-              <div>
-                <PDFDownloadLink
-                  document={
-                    <PDFDocument
-                      results={grades}
-                      name={name}
-                      date={date}
-                      course={course}
-                      department={department}
-                      studentId={studentId}
-                      totalGrade={totalGrade}
-                      year={year}
-                      quarter={quarter}
-                      academic_session={null}
-                      semester={null}
-                    />
-                  }
-                  fileName="result-sheet.pdf"
-                  className="text-xs mt-5"
-                >
-                  Download Result Sheet
-                </PDFDownloadLink>
-                <PDFDocument
-                  results={grades}
-                  name={name}
-                  date={date}
-                  course={course}
-                  department={department}
-                  studentId={studentId}
-                  totalGrade={totalGrade}
-                  year={year}
-                  quarter={quarter}
-                  academic_session={null}
-                  semester={null}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    )
+      )}
+    </div>
   );
 };
 
