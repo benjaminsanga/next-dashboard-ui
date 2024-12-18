@@ -165,7 +165,21 @@ const LongCourseResultForm = ({
         <InputField label="Department" name="department" register={register} error={errors.department} disabled />
         <InputField label="Course" name="course" register={register} error={errors.course} disabled />
         <InputField label="Academic Session" name="academic_session" register={register} error={errors.academic_session} />
-        <InputField label="Semester" name="semester" register={register} error={errors.semester} />
+        {/* <InputField label="Semester" name="semester" register={register} error={errors.semester} /> */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Quarter</label>
+          <select
+            {...register("semester")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+          >
+            <option value="">Select semester</option>
+            <option value="First">First</option>
+            <option value="Second">Second</option>
+          </select>
+          {errors.semester?.message && (
+            <p className="text-xs text-red-400">{errors.semester.message}</p>
+          )}
+        </div>
 
         {fields.map((field, index) => (
           <div key={field.id} className="flex gap-2 items-start">

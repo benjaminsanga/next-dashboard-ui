@@ -15,8 +15,8 @@ const columns = [
   { header: "Student", accessor: "student" },
   { header: "Matric Number", accessor: "matric_number", className: "hidden md:table-cell" },
   { header: "Avg. Score", accessor: "score", className: "hidden md:table-cell" },
-  { header: "Added By", accessor: "added_by", className: "hidden md:table-cell" },
   { header: "Date", accessor: "date", className: "hidden md:table-cell" },
+  { header: "Added By", accessor: "added_by", className: "hidden md:table-cell" },
   { header: "Actions", accessor: "action" },
 ];
 
