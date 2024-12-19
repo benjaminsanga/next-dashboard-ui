@@ -170,7 +170,7 @@ const LongCourseResultForm = ({
           <label className="text-xs text-gray-500">Quarter</label>
           <select
             {...register("semester")}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Select semester</option>
             <option value="First">First</option>

@@ -149,7 +149,7 @@ const ShortCourseResultForm = ({
       onSubmit={handleSubmit(onSubmit, onError)}
     >
       <h1 className="text-xl font-semibold">
-        {type === "create" ? "Create a new result" : "Update result"}
+        {type === "create" ? "Create a new short course result" : "Update result"}
       </h1>
       <div className="flex flex-wrap gap-4">
         <div className="w-full">
@@ -203,12 +203,28 @@ const ShortCourseResultForm = ({
           register={register}
           error={errors.year}
         />
-        <InputField
+        {/* <InputField
           label="Quarter"
           name={`quarter`}
           register={register}
           error={errors.quarter}
-        />
+        /> */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Quarter</label>
+          <select
+            {...register("quarter")}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
+          >
+            <option value="">Select Quarter</option>
+            <option value="First">First</option>
+            <option value="Second">Second</option>
+            <option value="Third">Third</option>
+            <option value="Fourth">Fourth</option>
+          </select>
+          {errors.quarter?.message && (
+            <p className="text-xs text-red-400">{errors.quarter.message}</p>
+          )}
+        </div>
         {fields.map((field, index) => (
           <div key={field.id} className="w-full flex gap-2">
             <InputField

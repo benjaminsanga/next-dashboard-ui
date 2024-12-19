@@ -8,7 +8,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import toast from "react-hot-toast";
 import { departmentOptions, courseOptions } from "@/lib/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email address!" }),
@@ -51,7 +51,7 @@ const schema = z.object({
     phone: z.string().min(1, { message: "Phone number is required!" }),
     address: z.string().min(1, { message: "Address is required!" }),
   }),
-  created_by: z.string(),
+  created_by: z.string().nullable(),
 });
 
 type Inputs = z.infer<typeof schema>;
@@ -76,9 +76,11 @@ const LongCourseStudentForm = ({
   });
 
   const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
-
-  // const courseLength = watch("course_length") as "long" | "short";
-  const department = watch("department") as string;
+  
+  useEffect(() => {
+    const { personnel_number } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}');
+    setValue("created_by", personnel_number);
+  }, [setValue]);
 
   const filteredDepartments = departmentOptions["long"];
 
@@ -88,14 +90,11 @@ const LongCourseStudentForm = ({
   };
 
   const insertStudent = async (student: Inputs): Promise<Inputs | null> => {
-    const { personnel_number } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
     const { error: signupError } = await supabase.auth.signUp({ email: student.email, password: student.password });
     if (signupError) {
       toast.error(signupError.message);
       return null;
     } else toast.success("Sign-up successful...");
-
-    student.created_by = personnel_number;
 
     const { data, error } = await supabase
       .from('long_course_students')
@@ -175,7 +174,7 @@ const LongCourseStudentForm = ({
           <label className="text-xs text-gray-500">Medical Status</label>
           <select
             {...register("medical_status")}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Select medical status</option>
             <option value="Fit">Fit</option>
@@ -231,7 +230,7 @@ const LongCourseStudentForm = ({
           <label className="text-xs text-gray-500">Marital Status</label>
           <select
             {...register("marital_status")}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Select marital status</option>
             <option value="Single">Single</option>
@@ -247,7 +246,7 @@ const LongCourseStudentForm = ({
             {...register("course_length", {
               onChange: (e) => handleCourseLengthChange(e.target.value as "long" | "short"),
             })}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Choose course length</option>
             <option value="long">Long Course</option>
@@ -265,7 +264,7 @@ const LongCourseStudentForm = ({
             {...register("department", {
               onChange: (e) => handleDepartmentChange(e.target.value),
             })}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Choose department</option>
             {filteredDepartments?.map((dept) => (
@@ -283,7 +282,7 @@ const LongCourseStudentForm = ({
           <label className="text-xs text-gray-500">Select Course</label>
           <select
             {...register("course")}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm"
+            className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Choose course</option>
             {filteredCourses?.map((course) => (

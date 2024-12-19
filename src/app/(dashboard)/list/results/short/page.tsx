@@ -205,6 +205,7 @@ const ResultListPage = () => {
           >
             View
           </button>
+          {/* <FormModal table="shortResult" type="update" data={item} /> */}
         </div>
       </td>
     </tr>

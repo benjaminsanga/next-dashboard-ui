@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { supabase } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
@@ -8,27 +8,13 @@ export default function CreateAdmin() {
   const [personnelNumber, setPersonnelNumber] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const { role: loggedInUserRole } = JSON.parse(localStorage.getItem("nasfa-dbms-admin") || '{}')
 
-  // const handleSignUp = async () => {
-  //   if (!personnelNumber || !password || !role) {
-  //     toast.error("Please fill in all fields.");
-  //     return;
-  //   }
-
-  //   const { data, error } = await supabase.from("admins").insert([
-  //     {
-  //       personnel_number: personnelNumber,
-  //       password,
-  //       role,
-  //     },
-  //   ]);
-
-  //   if (error) {
-  //     toast.error(error.message);
-  //   } else {
-  //     toast.success("Admin registration successful!");
-  //   }
-  // };
+  useEffect(() => {
+    if (loggedInUserRole !== "admin") {
+      window.history.back();
+    }
+  }, [loggedInUserRole]);
 
   const handleSignUp = async () => {
     if (!personnelNumber || !password || !role) {
@@ -57,27 +43,6 @@ export default function CreateAdmin() {
       }
     } catch (err) {
       toast.error("Error hashing password.");
-    }
-  };
-
-  const handleSignIn = async () => {
-    if (!personnelNumber || !password) {
-      toast.error("Please enter your personnel number and password.");
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("admins")
-      .select("id, role")
-      .eq("personnel_number", personnelNumber)
-      .eq("password", password)
-      .single();
-
-    if (error || !data) {
-      toast.error("Invalid credentials.");
-    } else {
-      toast.success("Login successful!");
-      location.href = `/admin?role=${data.role}`; // NA/0234
     }
   };
 
