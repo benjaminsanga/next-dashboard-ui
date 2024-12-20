@@ -122,6 +122,7 @@ export interface Result {
   first_name:   string;
   last_name:    string;
   created_by:   string;
+  matric_number: string;
 }
 
 

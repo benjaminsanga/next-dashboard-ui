@@ -1,3 +1,4 @@
+// Update grouping logic in the main code
 "use client"
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
@@ -11,13 +12,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const columns = [
-  { header: "Subjects Count", accessor: "name" },
   { header: "Student", accessor: "student" },
   { header: "Matric Number", accessor: "matric_number", className: "hidden md:table-cell" },
-  { header: "Avg. Score", accessor: "score", className: "hidden md:table-cell" },
+  { header: "Course", accessor: "course", className: "hidden md:table-cell" },
+  { header: "Session/Semester", accessor: "session_semester" },
   { header: "Date", accessor: "date", className: "hidden md:table-cell" },
-  { header: "Added By", accessor: "added_by", className: "hidden md:table-cell" },
-  { header: "Actions", accessor: "action" },
+  { header: "Added By", accessor: "created_by", className: "hidden md:table-cell" },
+  { header: "Results", accessor: "results" },
 ];
 
 const ResultListPage = () => {
@@ -26,11 +27,10 @@ const ResultListPage = () => {
   const [uniqueStudents, setUniqueStudents] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // PDF modal state
   const [course, setCourse] = useState("");
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [studentId, setStudentId] = useState("");
+  const [matricNumber, setStudentId] = useState("");
   const [department, setDepartment] = useState("");
   const [academicSession, setAcademicSession] = useState("")
   const [semester, setSemester] = useState("")
@@ -38,7 +38,7 @@ const ResultListPage = () => {
   const [grades, setGrades] = useState<{ title: string; grade: string; score: string; credit_unit: number }[]>([]);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [filters, setFilters] = useState({
-    studentId: "",
+    matricNumber: "",
     department: "",
     year: "",
   });
@@ -76,13 +76,16 @@ const ResultListPage = () => {
   useEffect(() => {
     const processedStudents = Object.values(
       results.reduce((acc: Record<string, any>, item) => {
-        const studentId = item.student_id || "";
-        if (!acc[studentId]) {
-          acc[studentId] = {
+        const key = `${item.matric_number}_${item.academic_session}_${item.semester}`;
+        if (!acc[key]) {
+          acc[key] = {
+            id: 0,
             courses_count: 0,
+            session_semester: '',
+            created_by: '',
             first_name: item.first_name,
             last_name: item.last_name,
-            student_id: item.student_id,
+            matric_number: item.matric_number,
             score: 0,
             created_at: item.created_at,
             department: item.department,
@@ -92,12 +95,12 @@ const ResultListPage = () => {
             course: item.course,
           };
         }
-        acc[studentId].courses_count += 1;
-        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
-        acc[studentId].semester = !!item.semester ? item.semester : '';
-        acc[studentId].course = !!item.course ? item.course : '';
-        acc[studentId].total_score += item.score;
-        acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
+        acc[key].id = item.id;
+        acc[key].courses_count += 1;
+        acc[key].session_semester = `${item.academic_session} - ${item.semester}`;
+        acc[key].total_score += item.score;
+        acc[key].created_by = item.created_by;
+        acc[key].score = acc[key].total_score / acc[key].courses_count;
         return acc;
       }, {} as Record<string, any>)
     );
@@ -127,22 +130,26 @@ const ResultListPage = () => {
   };
 
   const applyFilters = () => {
-    const { studentId, department, year } = filters;
+    const { matricNumber, department, year } = filters;
     const filtered = results.filter((student) => {
-      const matchesStudentId = studentId ? student?.student_id?.includes(studentId) : true;
+      const matchesStudentId = matricNumber ? student?.matric_number?.includes(matricNumber) : true;
       const matchesDepartment = department ? student.department.includes(department) : true;
       const matchesYear = year ? new Date(student.created_at).getFullYear().toString() === year : true;
       return matchesStudentId && matchesDepartment && matchesYear;
     });
+
     const processedFilteredStudents = Object.values(
       filtered.reduce((acc: Record<string, any>, item) => {
-        const studentId = item.student_id || "";
-        if (!acc[studentId]) {
-          acc[studentId] = {
+        const key = `${item.matric_number}_${item.academic_session}_${item.semester}`;
+        if (!acc[key]) {
+          acc[key] = {
             courses_count: 0,
+            id: 0,
+            session_semester: '',
+            created_by: '',
             first_name: item.first_name,
             last_name: item.last_name,
-            student_id: item.student_id,
+            matric_number: item.matric_number,
             score: 0,
             created_at: item.created_at,
             department: item.department,
@@ -152,13 +159,12 @@ const ResultListPage = () => {
             course: item.course,
           };
         }
-        acc[studentId].courses_count += 1;
-        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
-        acc[studentId].semester = !!item.semester ? item.semester : '';
-        acc[studentId].course = !!item.course ? item.course : '';
-        acc[studentId].created_by = !!item.created_by && item.created_by;
-        acc[studentId].total_score += item.score;
-        acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
+        acc[key].id = item.id;
+        acc[key].courses_count += 1;
+        acc[key].session_semester = `${item.academic_session} - ${item.semester}`;
+        acc[key].total_score += item.score;
+        acc[key].created_by = item.created_by;
+        acc[key].score = acc[key].total_score / acc[key].courses_count;
         return acc;
       }, {} as Record<string, any>)
     );
@@ -166,16 +172,19 @@ const ResultListPage = () => {
   };
 
   const clearFilters = () => {
-    setFilters({ studentId: "", department: "", year: "" });
+    setFilters({ matricNumber: "", department: "", year: "" });
     const processedStudents = Object.values(
       results.reduce((acc: Record<string, any>, item) => {
-        const studentId = item.student_id || "";
-        if (!acc[studentId]) {
-          acc[studentId] = {
+        const key = `${item.matric_number}_${item.academic_session}_${item.semester}`;
+        if (!acc[key]) {
+          acc[key] = {
+            id: 0,
             courses_count: 0,
+            session_semester: '',
+            created_by: '',
             first_name: item.first_name,
             last_name: item.last_name,
-            student_id: item.student_id,
+            matric_number: item.matric_number,
             score: 0,
             created_at: item.created_at,
             department: item.department,
@@ -185,12 +194,12 @@ const ResultListPage = () => {
             course: item.course,
           };
         }
-        acc[studentId].courses_count += 1;
-        acc[studentId].academic_session = !!item.academic_session ? item.academic_session : '';
-        acc[studentId].semester = !!item.semester ? item.semester : '';
-        acc[studentId].course = !!item.course ? item.course : '';
-        acc[studentId].total_score += item.score;
-        acc[studentId].score = acc[studentId].total_score / acc[studentId].courses_count;
+        acc[key].id = item.id;
+        acc[key].courses_count += 1;
+        acc[key].session_semester = `${item.academic_session} - ${item.semester}`;
+        acc[key].total_score += item.score;
+        acc[key].created_by = item.created_by;
+        acc[key].score = acc[key].total_score / acc[key].courses_count;
         return acc;
       }, {} as Record<string, any>)
     );
@@ -201,9 +210,10 @@ const ResultListPage = () => {
     return (
       student.first_name.toLowerCase().includes(searchQuery) ||
       student.last_name.toLowerCase().includes(searchQuery) ||
-      student.student_id.toLowerCase().includes(searchQuery)
+      student.matric_number.toLowerCase().includes(searchQuery)
     );
   });
+console.log("filteredStudents:", filteredStudents);
 
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
@@ -234,8 +244,8 @@ const ResultListPage = () => {
                 <input
                   type="text"
                   className="w-full p-2 border border-gray-300 rounded"
-                  value={filters.studentId}
-                  onChange={(e) => setFilters({ ...filters, studentId: e.target.value })}
+                  value={filters.matricNumber}
+                  onChange={(e) => setFilters({ ...filters, matricNumber: e.target.value })}
                   placeholder="Enter Student ID"
                 />
               </div>
@@ -283,10 +293,10 @@ const ResultListPage = () => {
 
       <Table columns={columns} renderRow={(item) => (
         <tr key={item.matric_number} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-          <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
           <td>{item.first_name} {item.last_name}</td>
           <td className="hidden md:table-cell">{item.matric_number}</td>
-          <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
+          <td className="hidden md:table-cell">{item.course}</td>
+          <td className="flex items-center py-4">{item.session_semester}</td>
           <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
           <td className="hidden md:table-cell">{item.created_by}</td>
           <td>
@@ -300,18 +310,29 @@ const ResultListPage = () => {
                 setDepartment(item.department)
                 setAcademicSession(item.academic_session)
                 setSemester(item.semester)
-                setStudentId(item.student_id)
-                setGrades(results.filter((i) => i.student_id === item.student_id).map(item => ({
-                  grade: item.grade,
-                  score: item.score,
-                  title: item?.course_code?.toUpperCase(),
-                  credit_unit: item?.credit_unit ?? 0
-                })))
+                setStudentId(item.matric_number)
+                setGrades(
+                  results
+                    .filter(
+                      (i) =>
+                        i.matric_number === item.matric_number &&
+                        i.academic_session === item.academic_session &&
+                        i.semester === item.semester
+                    )
+                    .map((item) => ({
+                      grade: item.grade,
+                      score: item.score,
+                      title: item?.course_code?.toUpperCase(),
+                      credit_unit: item?.credit_unit ?? 0,
+                    }))
+                );
+                
                 setView(true);
               }}
             >
               View
             </button>
+            <FormModal table="longResult" type="delete" data={item} id={item.id} />
           </div>
         </td>
         </tr>
@@ -346,7 +367,7 @@ const ResultListPage = () => {
                       date={date}
                       course={course}
                       department={department}
-                      studentId={studentId}
+                      studentId={matricNumber}
                       // totalGrade={totalGrade}
                       academic_session={academicSession}
                       semester={semester}
@@ -367,7 +388,7 @@ const ResultListPage = () => {
                   date={date}
                   course={course}
                   department={department}
-                  studentId={studentId}
+                  studentId={matricNumber}
                   // totalGrade={totalGrade}
                   academic_session={academicSession}
                   semester={semester}
