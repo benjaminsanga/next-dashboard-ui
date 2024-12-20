@@ -58,7 +58,6 @@ const TeacherForm = ({ type, data }: { type: "create" | "update"; data?: any }) 
   };
 
   const onSubmit = async (data: Inputs) => {
-    console.log(data);
     // Submit logic here
     toast.success("Data successfully submitted!");
     reset();

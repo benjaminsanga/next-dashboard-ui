@@ -40,8 +40,6 @@ const SingleTeacherPage = () => {
     loadInstructor();
   }, [id]);
   
-  console.log("instructor:", instructor)
-  
   return (
     !instructor ? <LoaderIcon/> : <div className="flex-1 p-4 flex flex-col gap-4 xl:flex-row">
       {/* LEFT */}
