@@ -6,10 +6,10 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { supabase } from "@/lib/supabase";
 import { Result } from "@/types/admin";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { LoaderIcon } from "react-hot-toast";
+import { PDFViewer } from "@react-pdf/renderer";
+import dynamic from "next/dynamic";
 
 const columns = [
   {
@@ -77,6 +77,7 @@ const ResultListPage = () => {
           acc[studentId] = {
             courses_count: 0,
             first_name: item.first_name,
+            middle_name: item.middle_name,
             last_name: item.last_name,
             student__id: item.student__id,
             score: 0,
@@ -172,7 +173,7 @@ const ResultListPage = () => {
     >
       <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
       <td>
-        {item.first_name} {item.last_name}
+        {item.first_name} {item.middle_name} {item.last_name}
       </td>
       <td className="hidden md:table-cell">{item.student__id}</td>
       <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
@@ -184,7 +185,7 @@ const ResultListPage = () => {
             className="text-sm p-2"
             onClick={() => {
               setCourse(item.course);
-              setName(`${item.first_name} ${item.last_name}`);
+              setName(`${item.first_name} ${item.middle_name} ${item.last_name}`);
               setDate(new Date(item.created_at).toDateString());
               setDepartment(item.department);
               setYear(item.year);
@@ -318,49 +319,30 @@ const ResultListPage = () => {
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
           <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
             <div
-              className="absolute top-4 right-4 cursor-pointer"
+              className="absolute bottom-8 right-8 cursor-pointer text-sm"
               onClick={() => {
                 setGrades([]);
                 setView(false);
               }}
             >
-              <Image src="/close.png" alt="" width={14} height={14} />
+              Close
             </div>
             <div>
-              <PDFDownloadLink
-                document={
-                  <PDFDocument
-                    results={grades}
-                    name={name}
-                    date={date}
-                    course={course}
-                    department={department}
-                    studentId={studentId}
-                    totalGrade={totalGrade}
-                    year={year}
-                    quarter={quarter}
-                    academic_session={null}
-                    semester={null}
-                  />
-                }
-                fileName="result-sheet.pdf"
-                className="text-xs mt-5"
-              >
-                Download Result Sheet
-              </PDFDownloadLink>
-              <PDFDocument
-                results={grades}
-                name={name}
-                date={date}
-                course={course}
-                department={department}
-                studentId={studentId}
-                totalGrade={totalGrade}
-                year={year}
-                quarter={quarter}
-                academic_session={null}
-                semester={null}
-              />
+              <PDFViewer style={{width: "495px", minHeight: "532px"}}>
+                <PDFDocument
+                  results={grades}
+                  name={name}
+                  date={date}
+                  course={course}
+                  department={department}
+                  studentId={studentId}
+                  totalGrade={totalGrade}
+                  year={year}
+                  quarter={quarter}
+                  academic_session={null}
+                  semester={null}
+                />
+              </PDFViewer>
             </div>
           </div>
         </div>

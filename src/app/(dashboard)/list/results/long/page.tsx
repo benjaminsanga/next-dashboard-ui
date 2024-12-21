@@ -7,9 +7,9 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { supabase } from "@/lib/supabase";
 import { Result } from "@/types/admin";
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { PDFViewer } from "@react-pdf/renderer";
 
 const columns = [
   { header: "Student", accessor: "student" },
@@ -84,6 +84,7 @@ const ResultListPage = () => {
             session_semester: '',
             created_by: '',
             first_name: item.first_name,
+            middle_name: item.middle_name,
             last_name: item.last_name,
             matric_number: item.matric_number,
             score: 0,
@@ -291,8 +292,8 @@ const ResultListPage = () => {
       )}
 
       <Table columns={columns} renderRow={(item) => (
-        <tr key={item.matric_number} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
-          <td>{item.first_name} {item.last_name}</td>
+        <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight">
+          <td>{item.first_name} {item.middle_name} {item.last_name}</td>
           <td className="hidden md:table-cell">{item.matric_number}</td>
           <td className="hidden md:table-cell">{item.course}</td>
           <td className="flex items-center py-4">{item.session_semester}</td>
@@ -304,7 +305,7 @@ const ResultListPage = () => {
               className="text-sm p-2"
               onClick={() => {
                 setCourse(item.course);
-                setName(`${item.first_name} ${item.last_name}`);
+                setName(`${item.first_name} ${item.middle_name} ${item.last_name}`);
                 setDate(new Date(item.created_at).toDateString());
                 setDepartment(item.department)
                 setAcademicSession(item.academic_session)
@@ -349,53 +350,32 @@ const ResultListPage = () => {
           <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">
             <div className="bg-white p-4 rounded-md relative w-fit h-[95%] overflow-auto">
               <div
-                className="absolute top-4 right-4 cursor-pointer"
+                className="absolute bottom-8 right-8 cursor-pointer text-sm"
                 onClick={() => {
                   setGrades([]);
                   setView(false);
                 }}
               >
-                <Image src="/close.png" alt="" width={14} height={14} />
+                Close
               </div>
               <div>
-                <PDFDownloadLink
-                  document={
-                    <PDFDocument
-                      results={grades}
-                      name={name}
-                      date={date}
-                      course={course}
-                      department={department}
-                      studentId={matricNumber}
-                      // totalGrade={totalGrade}
-                      academic_session={academicSession}
-                      semester={semester}
-                      year={null}
-                      quarter={null}
-                      gpa={calculateGPA(grades)}
-                      isCgpa={isCgpa}
-                    />
-                  }
-                  fileName="result-sheet.pdf"
-                  className="text-xs mt-5"
-                >
-                  Download Result Sheet
-                </PDFDownloadLink>
-                <PDFDocument
-                  results={grades}
-                  name={name}
-                  date={date}
-                  course={course}
-                  department={department}
-                  studentId={matricNumber}
-                  // totalGrade={totalGrade}
-                  academic_session={academicSession}
-                  semester={semester}
-                  year={null}
-                  quarter={null}
-                  gpa={calculateGPA(grades)}
-                  isCgpa={isCgpa}
-                />
+                <PDFViewer style={{width: "495px", minHeight: "532px"}}>
+                  <PDFDocument
+                    results={grades}
+                    name={name}
+                    date={date}
+                    course={course}
+                    department={department}
+                    studentId={matricNumber}
+                    // totalGrade={totalGrade}
+                    academic_session={academicSession}
+                    semester={semester}
+                    year={null}
+                    quarter={null}
+                    gpa={calculateGPA(grades)}
+                    isCgpa={isCgpa}
+                  />                  
+                </PDFViewer>
               </div>
             </div>
           </div>

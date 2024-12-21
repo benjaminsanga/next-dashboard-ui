@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 const schema = z.object({
   student__id: z.string().min(1, { message: "Student ID is required!" }),
   first_name: z.string().min(1, { message: "First name is required!" }),
+  middle_name: z.string().nullable(),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
   course: z.string().min(1, { message: "Course is required!" }),
@@ -94,6 +95,7 @@ const ShortCourseResultForm = ({
       }
 
       setValue("first_name", data.first_name || "");
+      setValue("middle_name", data.middle_name || "");
       setValue("last_name", data.last_name || "");
       setValue("department", data.department || "");
       setValue("course", data.course || "");
@@ -118,6 +120,7 @@ const ShortCourseResultForm = ({
         score: course.score,
         grade: course.grade,
         first_name: getValues("first_name"),
+        middle_name: getValues("middle_name"),
         last_name: getValues("last_name"),
         year: getValues("year"),
         quarter: getValues("quarter"),
@@ -174,6 +177,13 @@ const ShortCourseResultForm = ({
           name="first_name"
           register={register}
           error={errors.first_name}
+          disabled
+        />
+        <InputField
+          label="Middle Name"
+          name="middle_name"
+          register={register}
+          error={errors.middle_name}
           disabled
         />
         <InputField

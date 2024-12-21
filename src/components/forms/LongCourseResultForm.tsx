@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 const schema = z.object({
   matric_number: z.string().min(1, { message: "Matric Number is required!" }),
   first_name: z.string().min(1, { message: "First name is required!" }),
+  middle_name: z.string().nullable(),
   last_name: z.string().min(1, { message: "Last name is required!" }),
   department: z.string().min(1, { message: "Department is required!" }),
   course: z.string().min(1, { message: "Course is required!" }),
@@ -99,6 +100,7 @@ const LongCourseResultForm = ({
       if (error) throw new Error("Student not found");
 
       setValue("first_name", data.first_name || "");
+      setValue("middle_name", data.middle_name || "");
       setValue("last_name", data.last_name || "");
       setValue("department", data.department || "");
       setValue("course", data.course || "");
@@ -121,6 +123,7 @@ const LongCourseResultForm = ({
       const coursesData = formData.courses.map((course) => ({
         matric_number: formData.matric_number,
         first_name: formData.first_name,
+        middle_name: formData.middle_name,
         last_name: formData.last_name,
         department: formData.department,
         academic_session: formData.academic_session,
@@ -161,6 +164,7 @@ const LongCourseResultForm = ({
           </button>
         </div>
         <InputField label="First Name" name="first_name" register={register} error={errors.first_name} disabled />
+        <InputField label="Middle Name" name="middle_name" register={register} error={errors.middle_name} disabled />
         <InputField label="Last Name" name="last_name" register={register} error={errors.last_name} disabled />
         <InputField label="Department" name="department" register={register} error={errors.department} disabled />
         <InputField label="Course" name="course" register={register} error={errors.course} disabled />

@@ -120,6 +120,7 @@ export interface Result {
   semester?:   string;
   photo_url:    string;
   first_name:   string;
+  middle_name:   string;
   last_name:    string;
   created_by:   string;
   matric_number: string;
