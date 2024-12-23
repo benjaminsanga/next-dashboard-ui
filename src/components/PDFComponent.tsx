@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Document,
   Page,
@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer";
 
-// Define styles for the certificate
 const styles = StyleSheet.create({
   page: {
     backgroundColor: "#ffffff",
@@ -21,8 +20,8 @@ const styles = StyleSheet.create({
   border: {
     border: "3px solid #f3f3f3",
     padding: 10,
-    width: "495px",
-    minHeight: "532px",
+    width: "100%",
+    minHeight: "100%",
     display: "flex",
     flexDirection: "column",
   },
@@ -100,12 +99,20 @@ const CertificatePDF: React.FC<{
   totalGrade?: string;
   year?: string | null;
   quarter?: string | null;
-  academic_session?: string | null;
+  academicSession?: string | null;
   semester?: string | null;
   gpa?: number | null;
   isCgpa?: boolean;
-}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academic_session, semester, gpa, isCgpa }) => (
-  <Document>
+}> = ({ name, results, date, course, department, studentId, totalGrade, year, quarter, academicSession, semester, gpa, isCgpa }) => {
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null; 
+  
+  return (<Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.border}>
         <Text style={styles.header}>
@@ -133,8 +140,8 @@ const CertificatePDF: React.FC<{
         {quarter !== null && <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Quarter:</Text> {quarter}
         </Text>}
-        {academic_session !== null && <Text style={styles.info}>
-          <Text style={{ fontWeight: "bold" }}>Academic Session:</Text> {academic_session}
+        {academicSession !== null && <Text style={styles.info}>
+          <Text style={{ fontWeight: "bold" }}>Academic Session:</Text> {academicSession}
         </Text>}
         {semester !== null && <Text style={styles.info}>
           <Text style={{ fontWeight: "bold" }}>Semester:</Text> {semester}
@@ -185,8 +192,8 @@ const CertificatePDF: React.FC<{
         <Text style={{...styles.info, textAlign: 'center'}}>NASFA | Excellence in Education</Text>
       </View>
     </Page>
-  </Document>
-);
+  </Document>)
+};
 
 
 export default CertificatePDF;

@@ -368,7 +368,7 @@ const ResultListPage = () => {
                     department={department}
                     studentId={matricNumber}
                     // totalGrade={totalGrade}
-                    academic_session={academicSession}
+                    academicSession={academicSession}
                     semester={semester}
                     year={null}
                     quarter={null}

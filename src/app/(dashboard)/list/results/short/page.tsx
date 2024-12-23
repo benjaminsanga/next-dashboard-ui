@@ -13,10 +13,6 @@ import dynamic from "next/dynamic";
 
 const columns = [
   {
-    header: "Subjects Count",
-    accessor: "name",
-  },
-  {
     header: "Student",
     accessor: "student",
   },
@@ -26,9 +22,13 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
-    header: "Avg. Score",
-    accessor: "score",
+    header: "Course",
+    accessor: "course",
     className: "hidden md:table-cell",
+  },
+  {
+    header: "Year/Quarter",
+    accessor: "year_quarter",
   },
   {
     header: "Date",
@@ -164,19 +164,18 @@ const ResultListPage = () => {
   
     setUniqueStudents(filtered);
   };
-  
 
   const renderRow = (item: any) => (
     <tr
       key={item.student__id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-lamaPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">{item.courses_count}</td>
-      <td>
+      <td className="py-4">
         {item.first_name} {item.middle_name} {item.last_name}
       </td>
       <td className="hidden md:table-cell">{item.student__id}</td>
-      <td className="hidden md:table-cell">{parseFloat(item.score).toFixed(2)}</td>
+      <td className="hidden md:table-cell">{item.course}</td>
+      <td className="hidden md:table-cell">{`${item.year} - ${item.quarter}`}</td>
       <td className="hidden md:table-cell">{new Date(item.created_at).toDateString()}</td>
       <td className="hidden md:table-cell">{item.created_by}</td>
       <td>
@@ -339,7 +338,7 @@ const ResultListPage = () => {
                   totalGrade={totalGrade}
                   year={year}
                   quarter={quarter}
-                  academic_session={null}
+                  academicSession={null}
                   semester={null}
                 />
               </PDFViewer>
