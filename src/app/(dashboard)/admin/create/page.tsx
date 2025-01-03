@@ -8,18 +8,13 @@ export default function CreateAdmin() {
   const [personnelNumber, setPersonnelNumber] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [adminRole, setAdminRole] = useState("");
   
   useEffect(() => {
     const { role } = JSON.parse(window.localStorage.getItem("nasfa-dbms-admin") || "{}");
-    setAdminRole(role);
-  }, [])
-
-  useEffect(() => {
-    if (adminRole !== "admin") {
+    if (role !== "admin") {
       window.history.back();
     }
-  }, [adminRole]);
+  }, []);
 
   const handleSignUp = async () => {
     if (!personnelNumber || !password || !role) {
@@ -81,7 +76,7 @@ export default function CreateAdmin() {
           onChange={(e) => setRole(e.target.value)}
         >
           <option value="">Select Role</option>
-          <option value="admin">Admin</option>
+          {/* <option value="admin">Admin</option> */}
           <option value="results_admin">Results Admin</option>
           <option value="registration_admin">Registration Admin</option>
         </select>
