@@ -90,11 +90,11 @@ const LongCourseStudentForm = ({
   };
 
   const insertStudent = async (student: Inputs): Promise<Inputs | null> => {
-    const { error: signupError } = await supabase.auth.signUp({ email: student.email, password: student.password });
-    if (signupError) {
-      toast.error(signupError.message);
-      return null;
-    } else toast.success("Sign-up successful...");
+    // const { error: signupError } = await supabase.auth.signUp({ email: student.email, password: student.password });
+    // if (signupError) {
+    //   toast.error(signupError.message);
+    //   return null;
+    // } else toast.success("Sign-up successful...");
 
     const { data, error } = await supabase
       .from('long_course_students')
