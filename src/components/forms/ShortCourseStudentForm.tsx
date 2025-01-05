@@ -113,6 +113,21 @@ const ShortCourseStudentForm = ({
     return data as Inputs;
   };
 
+  const updateStudent = async (student: Inputs) => {
+    const { data, error } = await supabase
+      .from('short_course_students')
+      .update([student])
+      .eq('email', student.email);
+
+    if (error) {
+      toast.error(`Error updating student: ${error.message}`);
+      return null;
+    } else {
+      toast.success("Data successfully submitted");
+      reset();
+    }
+  };
+
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       toast.loading("Uploading...", { id: '54321' })
@@ -147,14 +162,18 @@ const ShortCourseStudentForm = ({
   };
 
   const onSubmit = async (data: any) => {
-    const result = await insertStudent(data);
+    if (type === 'create') {
+      await insertStudent(data);
+    } else {
+      await updateStudent(data);
+    }
   };
 
   const onError = (error: any) => console.log("error:", error);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit, onError)}>
-      <h1 className="text-xl font-semibold">Create a new short course student</h1>
+      <h1 className="text-xl font-semibold first-letter:uppercase">{type} a new short course student</h1>
 
       {/* Existing Fields */}
       <div className="flex flex-wrap gap-4">

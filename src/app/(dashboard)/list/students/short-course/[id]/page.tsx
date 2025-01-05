@@ -120,6 +120,12 @@ const SingleStudentPage = () => {
             <span><strong>Personnel ID Number</strong>: {student?.personnel_id_number}</span>
           </div>
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Year</strong>: {student?.year}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
+            <span><strong>Quarter</strong>: {student?.quarter}</span>
+          </div>
+          <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
             <span><strong>Rank</strong>: {student?.rank}</span>
           </div>
           <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex flex-col mb-2">
