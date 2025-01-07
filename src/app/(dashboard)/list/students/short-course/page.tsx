@@ -8,6 +8,8 @@ import { ShortCourseStudent } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { saveAs } from 'file-saver';
 
 const columns = [
   {
@@ -107,6 +109,107 @@ const ShortCourseStudentListPage = () => {
 
   const filteredStudents = applyFilters();
 
+  const deleteShortCourseStudents = async (id: number) => {
+    const {data, error} = await supabase
+      .from('short_course_students')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      toast.error(`Error deleting student: ${error.message}`);
+    } else {
+      toast.success("Data successfully deleted");
+    }
+  };
+
+  const exportDataAsCSV = () => {
+    if (students.length === 0) {
+      alert("No data available to export!");
+      return;
+    }
+  
+    // Define CSV headers
+    const headers = [
+      "ID",
+      "Email",
+      "First Name",
+      "Last Name",
+      "Phone",
+      "Address",
+      "Sex",
+      "Photo URL",
+      "Student ID",
+      "Department",
+      "Course",
+      "Date of Birth",
+      "Year",
+      "Quarter",
+      "Religion",
+      "Blood Group",
+      "Genotype",
+      "Marital Status",
+      "Middle Name",
+      "Personnel ID Number",
+      "Rank",
+      "Medical Status",
+      "Next of Kin Name",
+      "Next of Kin Phone",
+      "Next of Kin Address",
+      "Next of Kin Relationship",
+      "Close Associate Lagos Name",
+      "Close Associate Lagos Phone",
+      "Close Associate Lagos Address",
+      "Close Associate Lagos Relationship",
+      "Created At",
+      "Updated At",
+      "Created By",
+    ];
+  
+    // Map student data into CSV rows
+    const csvRows = students.map((student) => [
+      student.id,
+      student.email,
+      student.first_name,
+      student.last_name,
+      student.phone,
+      student.address,
+      student.sex,
+      student.photo_url,
+      student.student_id,
+      student.department,
+      student.course,
+      student.dob.toString(),
+      student.year,
+      student.quarter,
+      student.religion,
+      student.blood_group,
+      student.genotype,
+      student.marital_status,
+      student.middle_name,
+      student.personnel_id_number,
+      student.rank,
+      student.medical_status,
+      student.next_of_kin?.name || "",
+      student.next_of_kin?.phone || "",
+      student.next_of_kin?.address || "",
+      student.next_of_kin?.relationship || "",
+      student.close_associate_lagos?.name || "",
+      student.close_associate_lagos?.phone || "",
+      student.close_associate_lagos?.address || "",
+      student.close_associate_lagos?.relationship || "",
+      student.created_at.toString(),
+      student.updated_at.toString(),
+      student.created_by,
+    ]);
+  
+    // Combine headers and rows into a CSV string
+    const csvContent = [headers.join(","), ...csvRows.map((row) => row.join(","))].join("\n");
+  
+    // Create a Blob and trigger download
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "students_data.csv");
+  };
+
   const renderRow = (item: ShortCourseStudent) => (
     <tr
       key={item.id}
@@ -140,7 +243,7 @@ const ShortCourseStudentListPage = () => {
           {role === "admin" && (
             <>
               <FormModal table="shortCourseStudent" type="update" data={item} />
-              <FormModal table="shortCourseStudent" type="delete" />
+              <FormModal table="shortCourseStudent" type="delete" id={item.id} deleteStudent={deleteShortCourseStudents} />
             </>
           )}
         </div>
@@ -210,6 +313,12 @@ const ShortCourseStudentListPage = () => {
             <FormModal table="shortCourseStudent" type="create" />
           </div>
         </div>
+      </div>
+      <div className="flex justify-end mb-3">
+        <button 
+          className="px-3 py-2 bg-blue-700 text-white rounded-md text-sm"
+          onClick={exportDataAsCSV}
+        >Export Data</button>
       </div>
       <hr/>
       {/* LIST */}

@@ -40,6 +40,7 @@ const FormModal = ({
   type,
   data,
   id,
+  deleteStudent,
 }: {
   table:
     | "teacher"
@@ -59,6 +60,7 @@ const FormModal = ({
   type: "create" | "update" | "delete";
   data?: any;
   id?: number;
+  deleteStudent?: (id: number) => Promise<void>;
 }) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
@@ -76,9 +78,16 @@ const FormModal = ({
         <span className="text-center font-medium">
           All data will be lost. Are you sure you want to delete this {table}?
         </span>
-        <button className="bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center">
-          Delete
-        </button>
+        <button 
+          className="bg-red-700 text-white py-2 px-4 rounded-md border-none w-max self-center"
+          onClick={(event) => {
+            event.preventDefault();
+            if (table === 'shortCourseStudent' && deleteStudent) {
+              deleteStudent(id);
+              setOpen(false);
+            }
+          }}
+        >Delete</button>
       </form>
     ) : type === "create" || type === "update" ? (
       forms[table](type, data)
