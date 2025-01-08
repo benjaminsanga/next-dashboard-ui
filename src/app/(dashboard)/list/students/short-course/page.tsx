@@ -56,6 +56,7 @@ const ShortCourseStudentListPage = () => {
     course: "",
   });
   const [filteredCourses, setFilteredCourses] = useState<string[]>([]);
+  const [search, setSearch] = useState("");
 
   const filteredDepartments = departmentOptions["short"];
 
@@ -95,9 +96,29 @@ const ShortCourseStudentListPage = () => {
         ? student.course?.toLowerCase().includes(filters.course.toLowerCase())
         : true;
   
-      return matchesYear && matchesQuarter && matchesDepartment && matchesCourse;
+      const matchesSearch = search
+        ? [
+            student.student_id,
+            student.first_name,
+            student.last_name,
+            student.middle_name,
+            student.department,
+            student.course,
+            student.phone,
+            student.email,
+            student.personnel_id_number,
+            student.rank,
+            student.religion,
+            student.sex
+          ]
+            .join(" ")
+            .toLowerCase()
+            .includes(search.toLowerCase())
+        : true;
+  
+      return matchesYear && matchesQuarter && matchesDepartment && matchesCourse && matchesSearch;
     });
-  };
+  };  
   
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -131,75 +152,27 @@ const ShortCourseStudentListPage = () => {
     // Define CSV headers
     const headers = [
       "ID",
-      "Email",
+      "Personnel ID Number",
+      "Rank",
       "First Name",
       "Last Name",
-      "Phone",
-      "Address",
-      "Sex",
-      "Photo URL",
+      "Middle Name",
       "Student ID",
       "Department",
       "Course",
-      "Date of Birth",
-      "Year",
-      "Quarter",
-      "Religion",
-      "Blood Group",
-      "Genotype",
-      "Marital Status",
-      "Middle Name",
-      "Personnel ID Number",
-      "Rank",
-      "Medical Status",
-      "Next of Kin Name",
-      "Next of Kin Phone",
-      "Next of Kin Address",
-      "Next of Kin Relationship",
-      "Close Associate Lagos Name",
-      "Close Associate Lagos Phone",
-      "Close Associate Lagos Address",
-      "Close Associate Lagos Relationship",
-      "Created At",
-      "Updated At",
-      "Created By",
     ];
   
     // Map student data into CSV rows
-    const csvRows = students.map((student) => [
+    const csvRows = filteredStudents.map((student) => [
       student.id,
-      student.email,
+      student.personnel_id_number,
+      student.rank,
       student.first_name,
       student.last_name,
-      student.phone,
-      student.address,
-      student.sex,
-      student.photo_url,
+      student.middle_name,
       student.student_id,
       student.department,
       student.course,
-      student.dob.toString(),
-      student.year,
-      student.quarter,
-      student.religion,
-      student.blood_group,
-      student.genotype,
-      student.marital_status,
-      student.middle_name,
-      student.personnel_id_number,
-      student.rank,
-      student.medical_status,
-      student.next_of_kin?.name || "",
-      student.next_of_kin?.phone || "",
-      student.next_of_kin?.address || "",
-      student.next_of_kin?.relationship || "",
-      student.close_associate_lagos?.name || "",
-      student.close_associate_lagos?.phone || "",
-      student.close_associate_lagos?.address || "",
-      student.close_associate_lagos?.relationship || "",
-      student.created_at.toString(),
-      student.updated_at.toString(),
-      student.created_by,
     ]);
   
     // Combine headers and rows into a CSV string
@@ -315,6 +288,14 @@ const ShortCourseStudentListPage = () => {
         </div>
       </div>
       <div className="flex justify-end mb-3">
+        <input
+          type="text"
+          name="search"
+          placeholder="Search"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="border p-2 rounded w-[250px] text-sm mx-4"
+        />
         <button 
           className="px-3 py-2 bg-blue-700 text-white rounded-md text-sm"
           onClick={exportDataAsCSV}
