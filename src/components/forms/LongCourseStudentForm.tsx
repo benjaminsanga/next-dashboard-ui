@@ -21,7 +21,7 @@ const schema = z.object({
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
   sex: z.enum(["male", "female"], { message: "Sex is required!" }),
-  photo_url: z.string().min(1, { message: "File is required!" }),
+  photo_url: z.string().nullable().optional(),
   matric_number: z.string().min(1, { message: "Matric Number is required!" }),
   personnel_id_number: z.string().min(1, { message: "Personnel ID Number is required!" }),
   jamb_reg_number: z.string().min(1, { message: "Jamb Registration Number is required!" }),
@@ -111,6 +111,23 @@ const LongCourseStudentForm = ({
     return data as Inputs;
   };
 
+  const updateStudent = async (student: Inputs): Promise<Inputs | null> => {
+    const { data: res, error } = await supabase
+      .from('long_course_students')
+      .update(student)
+      .eq('personnel_id_number', data?.personnel_id_number)
+      .single();
+    if (error) {
+      toast.error(`Error updating student: ${error.message}`);
+      return null;
+    } else {
+      toast.success(`Updated successfully`);
+      reset();
+      window.location.reload();
+    }
+    return res as Inputs;
+  }
+
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       toast.loading("Uploading...", { id: '54321' })
@@ -145,14 +162,14 @@ const LongCourseStudentForm = ({
   };
 
   const onSubmit = async (data: any) => {
-    const result = await insertStudent(data);
+    const result = await type === 'create' ? insertStudent(data) : updateStudent(data);
   };
 
   const onError = (error: any) => console.log("error:", error);
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit, onError)}>
-      <h1 className="text-xl font-semibold">Create a long course new student</h1>
+      <h1 className="text-xl font-semibold first-letter:uppercase">{type} Long Course Student</h1>
 
       {/* Existing Fields */}
       <div className="flex flex-wrap gap-4">
@@ -177,8 +194,8 @@ const LongCourseStudentForm = ({
             className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Select medical status</option>
-            <option value="Fit">Fit</option>
-            <option value="Unfit">Unfit</option>
+            <option value="Fit" selected={data?.medical_status === 'Fit'}>Fit</option>
+            <option value="Unfit" selected={data?.medical_status === 'Unfit'}>Unfit</option>
           </select>
           {errors.medical_status?.message && (
             <p className="text-xs text-red-400">{errors.medical_status.message}</p>
@@ -194,8 +211,8 @@ const LongCourseStudentForm = ({
             {...register("sex")}
             defaultValue={data?.sex}
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="male" selected={data?.sex === 'male'}>Male</option>
+            <option value="female" selected={data?.sex === 'female'}>Female</option>
           </select>
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
@@ -203,13 +220,14 @@ const LongCourseStudentForm = ({
             </p>
           )}
         </div>
-        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+        {type === 'create' && <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label className="text-xs text-gray-500">Picture</label>
           <label
             className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
             htmlFor="img"
           >
             <Image src="/upload.png" alt="" width={28} height={28} />
-            <span>Upload a photo</span>
+            <span>Select image</span>
           </label>
           <input type="file" id="img" onChange={handleImageChange} className="hidden" />
           {errors.photo_url?.message && (
@@ -217,7 +235,7 @@ const LongCourseStudentForm = ({
               {errors.photo_url.message.toString()}
             </p>
           )}
-        </div>
+        </div>}
       </div>
 
       {/* New Fields */}
@@ -233,8 +251,8 @@ const LongCourseStudentForm = ({
             className="w-full p-2 border border-gray-300 rounded-md text-sm text-gray-500"
           >
             <option value="">Select marital status</option>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
+            <option value="Single" selected={data?.marital_status === 'Single'}>Single</option>
+            <option value="Married" selected={data?.marital_status === 'Married'}>Married</option>
           </select>
           {errors.marital_status?.message && (
             <p className="text-xs text-red-400">{errors.marital_status.message}</p>
@@ -268,7 +286,7 @@ const LongCourseStudentForm = ({
           >
             <option value="">Choose department</option>
             {filteredDepartments?.map((dept) => (
-              <option key={dept} value={dept}>
+              <option key={dept} value={dept} selected={dept === data?.department}>
                 {dept}
               </option>
             ))}

@@ -34,6 +34,7 @@ export default function Home() {
       <Head>
         <title>NASFA - RMS</title>
         <meta name="description" content="Streamlining course management records." />
+        <link rel="icon" type="image/x-icon" href="/images/nasfalogo.png" />
       </Head>
       <UserNavbar/>
       <main className="bg-gray-50 text-gray-800">

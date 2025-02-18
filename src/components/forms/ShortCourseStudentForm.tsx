@@ -173,7 +173,7 @@ const ShortCourseStudentForm = ({
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit, onError)}>
-      <h1 className="text-xl font-semibold first-letter:uppercase">{type} a new short course student</h1>
+      <h1 className="text-xl font-semibold first-letter:uppercase">{type} Short Course Student</h1>
 
       {/* Existing Fields */}
       <div className="flex flex-wrap gap-4">
