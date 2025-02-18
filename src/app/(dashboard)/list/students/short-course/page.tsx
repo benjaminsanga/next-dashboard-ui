@@ -140,6 +140,7 @@ const ShortCourseStudentListPage = () => {
       toast.error(`Error deleting student: ${error.message}`);
     } else {
       toast.success("Data successfully deleted");
+      window.location.reload();
     }
   };
 

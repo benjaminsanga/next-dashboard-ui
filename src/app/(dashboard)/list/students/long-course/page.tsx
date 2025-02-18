@@ -9,6 +9,7 @@ import { LongCourseStudent } from "@/types/admin";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const columns = [
   {
@@ -101,6 +102,20 @@ const LongCourseStudentListPage = () => {
     }
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
+
+  const deleteLongCourseStudent = async (id: number) => {
+    const {data, error} = await supabase
+      .from('long_course_students')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      toast.error(`Error deleting student: ${error.message}`);
+    } else {
+      toast.success("Data successfully deleted");
+      window.location.reload();
+    }
+  };
   
   const renderRow = (item: LongCourseStudent) => (
     <tr
@@ -138,7 +153,7 @@ const LongCourseStudentListPage = () => {
             // </button>
             <>
             <FormModal table="longCourseStudent" type="update" data={item} />
-            <FormModal table="longCourseStudent" type="delete" />
+            <FormModal table="longCourseStudent" type="delete" id={item.id} deleteStudent={deleteLongCourseStudent} />
             </>
           )}
         </div>
