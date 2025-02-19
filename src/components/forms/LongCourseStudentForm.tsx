@@ -220,7 +220,7 @@ const LongCourseStudentForm = ({
             </p>
           )}
         </div>
-        {type === 'create' && <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
           <label className="text-xs text-gray-500">Picture</label>
           <label
             className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
@@ -235,7 +235,7 @@ const LongCourseStudentForm = ({
               {errors.photo_url.message.toString()}
             </p>
           )}
-        </div>}
+        </div>
       </div>
 
       {/* New Fields */}
